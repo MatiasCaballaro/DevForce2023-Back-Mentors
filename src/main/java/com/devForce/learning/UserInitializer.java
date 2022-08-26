@@ -1,8 +1,10 @@
 package com.devForce.learning;
 
 import com.devForce.learning.model.dto.UsuarioDTO;
+import com.devForce.learning.model.entity.Licencia;
 import com.devForce.learning.model.entity.Solicitud;
 import com.devForce.learning.model.entity.Usuario;
+import com.devForce.learning.repository.LicenciaRepository;
 import com.devForce.learning.repository.SolicitudRepository;
 import com.devForce.learning.repository.UsuarioRepository;
 import com.github.javafaker.Faker;
@@ -11,6 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 @Component
@@ -25,16 +33,16 @@ public class UserInitializer implements CommandLineRunner {
     @Autowired
     private SolicitudRepository solicitudRepository;
 
+    @Autowired
+    private LicenciaRepository licenciaRepository;
 
     @Override
     public void run(String[] args) throws Exception {
-
 
         if(datosDePrueba){
 
             log.info("Starting to initialize sample data...");
             Faker faker = new Faker();
-
 
             /* CREACION DE USUARIOS */
             System.out.println("---------- USUARIOS ----------");
@@ -56,9 +64,9 @@ public class UserInitializer implements CommandLineRunner {
                 usuarioRepository.save(user);
             }
 
-
             /* INDIVIDUAL TEST */
-            Usuario user = new Usuario();
+
+            /*Usuario user = new Usuario();
             user.setNombre("Matias");
             user.setApellido("Caballaro");
             user.setUsername("Caba87");
@@ -68,7 +76,7 @@ public class UserInitializer implements CommandLineRunner {
             user.setRol("User");
             user.setHasTeams(true);
             System.out.println(user.toString());
-            usuarioRepository.save(user);
+            usuarioRepository.save(user);*/
 
 
             /* Sample usuarioDTO */
@@ -77,49 +85,72 @@ public class UserInitializer implements CommandLineRunner {
 
             Usuario usuarioParaPruebaDTO = usuarioRepository.findAll().stream().findFirst().orElse(null);
             System.out.println(usuarioParaPruebaDTO.toString());
-
             UsuarioDTO usuarioDTO = crearUsuarioDTO(usuarioParaPruebaDTO);
-
             System.out.println(usuarioDTO);
 
 
             /* CREACION DE SOLICITUDES */
+
             System.out.println("---------- SOLICITUDES ----------");
 
             for (int j = 1; j <11; j++) {
 
                 Solicitud solicitud = new Solicitud();
 
-                solicitud.setSolicitudId(j);
+                solicitud.setId(j);
                 solicitud.setTipo("Udemy");
                 solicitud.setDescripcion(faker.chuckNorris().fact());
                 //solicitud.setApruebaMentorID();
                 //solicitud.setApruebaAdminID();
                 solicitud.setEstado("pendienteAdmin");
-                //solicitud.setUsuario(usuarioRepository.findAll().stream().findAny().orElse(null));
+                solicitud.setUsuario(usuarioRepository.findAll().stream().findAny().orElse(null));
                 System.out.println(solicitud.toString());
 
                 solicitudRepository.save(solicitud);
             }
 
 
-
             /* INDIVIDUAL TEST SOLICITUD*/
-            Solicitud solicitud = new Solicitud();
+
+            /*Solicitud solicitud = new Solicitud();
             solicitud.setSolicitudId(1L);
             solicitud.setTipo("Udemy");
             solicitud.setEstado("pendienteAdmin");
             solicitud.setDescripcion(faker.chuckNorris().fact());
             //solicitud.setUsuario(usuarioRepository.findAll().stream().findAny().orElse(null));
             System.out.println(solicitud.toString());
-            solicitudRepository.save(solicitud);
+            solicitudRepository.save(solicitud);*/
 
 
+
+
+            /* CREACION DE SOLICITUDES */
+
+            System.out.println("---------- LICENCIAS ----------");
+
+
+
+            for (int k = 1; k <11; k++) {
+
+                Licencia licencia = new Licencia();
+
+                licencia.setId(k);
+                licencia.setSerial(faker.bothify("????##?###???###"));
+                licencia.setSolicitudes(new HashSet<>());
+                licencia.setOccupation("asignada");
+                licencia.setExpdate(LocalDateTime.now().plusWeeks(3));
+                licencia.setPlatform("Udemy");
+
+                System.out.println(licencia.toString());
+
+                licenciaRepository.save(licencia);
+            }
 
             log.info("Finished with data initialization");
 
         }
     }
+
     public UsuarioDTO crearUsuarioDTO(Usuario usuario) {
         UsuarioDTO dto = new UsuarioDTO();
         dto.setId(usuario.getId());
@@ -131,7 +162,6 @@ public class UserInitializer implements CommandLineRunner {
         dto.setRol(usuario.getRol());
         dto.setHasTeams(usuario.getHasTeams());
         //dto.setSolicitudes(usuario.getSolicitudes());
-
         return dto;
     }
 }

@@ -1,10 +1,10 @@
 package com.devForce.learning.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -36,15 +36,31 @@ public class Usuario {
     @Column(name = "phone", length = 50)
     private String phone;
 
-    @Column(name = "role", length = 25, nullable = false)
+    @Column(name = "rol", length = 25, nullable = false)
     private String rol;
 
     @Column(name = "hasTeams")
     private Boolean hasTeams;
 
 
+    //Relación con solicitud
     @OneToMany(mappedBy="usuario", fetch=FetchType.EAGER)
     private Set<Solicitud> solicitudes;
 
 
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", Apellido='" + Apellido + '\'' +
+                ", username='" + username + '\'' +
+                ", mail='" + mail + '\'' +
+                ", password='" + password + '\'' +
+                ", phone='" + phone + '\'' +
+                ", rol='" + rol + '\'' +
+                ", hasTeams=" + hasTeams +
+//                ", solicitudes=" + solicitudes.stream().map(s -> s.getSolicitudId()).collect(Collectors.toList()) +
+                '}';
+    }
 }

@@ -16,7 +16,7 @@ public class Solicitud {
 
     @Id
     @GeneratedValue
-    private long solicitudId;
+    private long id;
 
     @Column(name = "tipo", length = 25, nullable = false)
     private String tipo;
@@ -34,14 +34,23 @@ public class Solicitud {
     private String estado;
 
 
-
+    //Relación con usuario
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="usuario_id")
     private Usuario usuario;
+
+    //Relación con licencia
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="licencia_id")
+    private Licencia licencia;
+
 
     @JsonIgnore
     public Usuario getUsuario() {
         return usuario;
     }
 
+    public Licencia getLicencia() {
+        return licencia;
+    }
 }
