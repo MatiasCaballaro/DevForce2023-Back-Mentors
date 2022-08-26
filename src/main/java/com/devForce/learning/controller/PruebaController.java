@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
-public class Prueba {
+public class PruebaController {
 
     @Autowired
     UsuarioRepository usuarioRepository;
