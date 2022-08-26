@@ -1,6 +1,8 @@
 package com.devForce.learning.controller;
 
+import com.devForce.learning.model.entity.Solicitud;
 import com.devForce.learning.model.entity.Usuario;
+import com.devForce.learning.repository.SolicitudRepository;
 import com.devForce.learning.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,9 +18,20 @@ public class PruebaController {
     @Autowired
     UsuarioRepository usuarioRepository;
 
+    @Autowired
+    SolicitudRepository solicitudRepository;
+
     @RequestMapping("/usuarios")
     public List<Usuario> allUsers() {
         return usuarioRepository
+                .findAll()
+                .stream()
+                .collect(Collectors.toList());
+    }
+
+    @RequestMapping("/solicitudes")
+    public List<Solicitud> allSolicitudes() {
+        return solicitudRepository
                 .findAll()
                 .stream()
                 .collect(Collectors.toList());
