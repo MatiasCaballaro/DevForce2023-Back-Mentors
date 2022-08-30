@@ -57,26 +57,40 @@ public class UserInitializer implements CommandLineRunner {
                 user.setMail(user.getNombre()+"."+user.getApellido()+"@gire.com");
                 user.setPassword(user.getNombre()+"123");
                 user.setPhone(faker.phoneNumber().cellPhone());
-                user.setRol("User");
+                user.setRol("Usuario");
                 user.setHasTeams(faker.random().nextBoolean());
                 System.out.println(user.toString());
 
                 usuarioRepository.save(user);
             }
 
-            /* INDIVIDUAL TEST */
+            /* INDIVIDUAL TEST ADMIN*/
 
-            /*Usuario user = new Usuario();
-            user.setNombre("Matias");
-            user.setApellido("Caballaro");
-            user.setUsername("Caba87");
-            user.setMail((user.getNombre()+"."+user.getApellido()+"@gire.com").toLowerCase());
-            user.setPassword(user.getNombre()+"123");
-            user.setPhone("123456789");
-            user.setRol("User");
-            user.setHasTeams(true);
-            System.out.println(user.toString());
-            usuarioRepository.save(user);*/
+            Usuario adminUser = new Usuario();
+            adminUser.setNombre("Adrian");
+            adminUser.setApellido("Pierro");
+            adminUser.setUsername("AdrianPierro");
+            adminUser.setMail((adminUser.getNombre()+"."+adminUser.getApellido()+"@gire.com").toLowerCase());
+            adminUser.setPassword(adminUser.getNombre()+"123");
+            adminUser.setPhone("123456789");
+            adminUser.setRol("Admin");
+            adminUser.setHasTeams(true);
+            System.out.println(adminUser.toString());
+            usuarioRepository.save(adminUser);
+
+            /* INDIVIDUAL TEST ADMIN*/
+
+            Usuario mentorUser = new Usuario();
+            mentorUser.setNombre("Javier");
+            mentorUser.setApellido("Ottina");
+            mentorUser.setUsername("JavierOttina");
+            mentorUser.setMail((mentorUser.getNombre()+"."+mentorUser.getApellido()+"@gire.com").toLowerCase());
+            mentorUser.setPassword(mentorUser.getNombre()+"123");
+            mentorUser.setPhone("123456789");
+            mentorUser.setRol("Mentor");
+            mentorUser.setHasTeams(true);
+            System.out.println(mentorUser.toString());
+            usuarioRepository.save(mentorUser);
 
 
             /* Sample usuarioDTO */
