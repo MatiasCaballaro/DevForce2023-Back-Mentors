@@ -22,7 +22,7 @@ public class Usuario {
     private String nombre;
 
     @Column(name = "lastname", length = 50, nullable = false)
-    private String Apellido;
+    private String apellido;
 
     @Column(name = "username", length = 50, nullable = false)
     private String username;
@@ -48,12 +48,27 @@ public class Usuario {
     private Set<Solicitud> solicitudes;
 
 
+
+    //Constructor
+
+
+    public Usuario(String nombre, String apellido, String username, String mail, String password, String phone, String rol, Boolean hasTeams) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.username = username;
+        this.mail = mail;
+        this.password = password;
+        this.phone = phone;
+        this.rol = rol;
+        this.hasTeams = hasTeams;
+    }
+
     @Override
     public String toString() {
         return "Usuario{" +
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
-                ", Apellido='" + Apellido + '\'' +
+                ", apellido='" + apellido + '\'' +
                 ", username='" + username + '\'' +
                 ", mail='" + mail + '\'' +
                 ", password='" + password + '\'' +
