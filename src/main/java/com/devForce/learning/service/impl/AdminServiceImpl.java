@@ -17,6 +17,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public ResponseEntity<String> crearUsuario(Usuario usuario) {
+        //TODO: Chequear que soy un usuario Admin
         Usuario usuarioYaExiste=usuarioRepository.findByNombreAndApellido(usuario.getNombre(), usuario.getApellido());
         if(usuarioYaExiste==null){
             addUsuario(usuario);
