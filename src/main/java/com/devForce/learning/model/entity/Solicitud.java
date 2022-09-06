@@ -9,13 +9,12 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Entity
 @Table(name = "solicitud")
 public class Solicitud {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "tipo", length = 25, nullable = false)
@@ -52,5 +51,19 @@ public class Solicitud {
 
     public Licencia getLicencia() {
         return licencia;
+    }
+
+    @Override
+    public String toString() {
+        return "Solicitud{" +
+                "id=" + id +
+                //", tipo='" + tipo + '\'' +
+                //", descripcion='" + descripcion + '\'' +
+                //", apruebaMentorID=" + apruebaMentorID +
+                //", apruebaAdminID=" + apruebaAdminID +
+                ", estado='" + estado + '\'' +
+                ", usuario=" + usuario +
+                //", licencia=" + licencia +
+                '}';
     }
 }

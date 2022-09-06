@@ -1,5 +1,6 @@
 package com.devForce.learning.controller;
 
+import com.devForce.learning.model.entity.Licencia;
 import com.devForce.learning.model.entity.Usuario;
 import com.devForce.learning.repository.LicenciaRepository;
 import com.devForce.learning.repository.SolicitudRepository;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +38,30 @@ public class AdminController {
     public ResponseEntity<String> nuevoUsuario(@RequestBody Usuario usuario) throws  Exception {
         return adminservice.crearUsuario(usuario);
     }
+
+    //TODO: Averiguar como pasarle la licencia al método y hacerlo funcar. Agregar parametro cantidad de dias y preguntar si está bien lo del Serial
+    @PostMapping("/asignarLicencia")
+    public ResponseEntity<String> licenciaAsignadaAUsuario(@RequestBody Usuario usuario, @RequestParam String serial) throws Exception {
+        System.out.println("HOLA ENTRÉ");
+
+        System.out.println("El usuario es: " + usuario);
+        System.out.println("La licencia es: " + licenciaRepository.findBySerial(serial));
+        System.out.println(Arrays.toString(licenciaRepository.findAll().toArray()));
+
+        System.out.println("El serial es: " + serial);
+
+        return adminservice.asignarLicencia(usuario, licenciaRepository.findBySerial(serial));
+    }
+
+    @GetMapping("/licencias")
+    public List<Licencia> getLicencias() {
+        return licenciaRepository.findAll()
+                .stream()
+                .collect(Collectors.toList());
+    }
+
+
+
 
 
 

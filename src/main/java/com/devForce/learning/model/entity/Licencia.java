@@ -1,10 +1,13 @@
 package com.devForce.learning.model.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,7 +18,7 @@ import java.util.Set;
 public class Licencia {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "serial", length = 255)
@@ -32,21 +35,17 @@ public class Licencia {
 
     //Relación con solicitud
     @OneToMany(mappedBy="licencia", fetch=FetchType.EAGER)
-    private Set<Solicitud> solicitudes;
-
-    public Set<Solicitud> getSolicitudes() {
-        return solicitudes;
-    }
+    private List<Solicitud> solicitudes;
 
     @Override
     public String toString() {
         return "Licencia{" +
                 "id=" + id +
                 ", serial='" + serial + '\'' +
-                ", occupation='" + occupation + '\'' +
-                ", expdate=" + expdate +
-                ", platform='" + platform + '\'' +
-                ", solicitudes=" + solicitudes +
+                //", occupation='" + occupation + '\'' +
+                //", expdate=" + expdate +
+                //", platform='" + platform + '\'' +
+                //", solicitudes=" + solicitudes +
                 '}';
     }
 }

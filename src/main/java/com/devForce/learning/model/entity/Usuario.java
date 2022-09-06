@@ -3,6 +3,7 @@ package com.devForce.learning.model.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
 public class Usuario {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "name", length = 50, nullable = false)
@@ -45,7 +46,7 @@ public class Usuario {
 
     //Relación con solicitud
     @OneToMany(mappedBy="usuario", fetch=FetchType.EAGER)
-    private Set<Solicitud> solicitudes;
+    private List<Solicitud> solicitudes;
 
 
 
@@ -69,12 +70,12 @@ public class Usuario {
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +
-                ", username='" + username + '\'' +
-                ", mail='" + mail + '\'' +
-                ", password='" + password + '\'' +
-                ", phone='" + phone + '\'' +
+                //", username='" + username + '\'' +
+                //", mail='" + mail + '\'' +
+                //", password='" + password + '\'' +
+                //", phone='" + phone + '\'' +
                 ", rol='" + rol + '\'' +
-                ", hasTeams=" + hasTeams +
+                //", hasTeams=" + hasTeams +
 //                ", solicitudes=" + solicitudes.stream().map(s -> s.getSolicitudId()).collect(Collectors.toList()) +
                 '}';
     }

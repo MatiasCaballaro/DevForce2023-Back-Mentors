@@ -15,10 +15,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Slf4j
 @Component
@@ -116,7 +113,7 @@ public class UserInitializer implements CommandLineRunner {
                 solicitud.setDescripcion(faker.chuckNorris().fact());
                 //solicitud.setApruebaMentorID();
                 //solicitud.setApruebaAdminID();
-                solicitud.setEstado("pendienteAdmin");
+                solicitud.setEstado("ACEPTADO");
                 solicitud.setUsuario(usuarioRepository.findAll().stream().findAny().orElse(null));
                 System.out.println(solicitud.toString());
 
@@ -145,12 +142,12 @@ public class UserInitializer implements CommandLineRunner {
 
 
             for (int k = 1; k <11; k++) {
-
+                List<Solicitud> list = null;
                 Licencia licencia = new Licencia();
 
                 licencia.setId(k);
                 licencia.setSerial(faker.bothify("????##?###???###"));
-                licencia.setSolicitudes(new HashSet<>());
+                licencia.setSolicitudes(list);
                 licencia.setOccupation("asignada");
                 licencia.setExpdate(LocalDateTime.now().plusWeeks(3));
                 licencia.setPlatform("Udemy");
@@ -160,9 +157,9 @@ public class UserInitializer implements CommandLineRunner {
                 licenciaRepository.save(licencia);
             }
 
-            Licencia licenciaPrueba= licenciaRepository.findById(1L).orElse(null);
+            Licencia licenciaPrueba= licenciaRepository.findById(1L);
             System.out.println("licenciaPrueba = " + licenciaPrueba);
-            licenciaPrueba.setSolicitudes((Set<Solicitud>) solicitudRepository.findById(1L).orElse(null));
+            licenciaPrueba.setSolicitudes((List<Solicitud>) solicitudRepository.findById(1L));
 
             log.info("Finished with data initialization");
 
