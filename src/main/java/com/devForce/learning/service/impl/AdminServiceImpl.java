@@ -7,6 +7,7 @@ import com.devForce.learning.repository.LicenciaRepository;
 import com.devForce.learning.repository.SolicitudRepository;
 import com.devForce.learning.repository.UsuarioRepository;
 import com.devForce.learning.service.AdminService;
+import org.apache.logging.log4j.util.EnglishEnums;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,13 +61,14 @@ public class AdminServiceImpl implements AdminService {
         usuarioRepository.save(newUsuario);
     }
 
-    //TODO: Realizar el mètodo de asignar licencia
+    //TODO: Terminar asignarLicenciaMétodo
     @Override
     public ResponseEntity<?> asignarLicencia(Solicitud solicitud, Licencia licencia) {
-        // VERIFICAR que el usuario logueado sea admin
+        // TODO VERIFICAR que el usuario logueado sea admin
 
         // AGREGO ESTO PARA TESTING SOLAMENTE, DESPUES BORRAR
         solicitud.setEstado("PENDIENTE-ADMIN");
+
         System.out.println("El usuario de la solicitud es: " + solicitud.getUsuario());
 
         // Buscamos si el usuario ya tenía una licencia
@@ -81,16 +83,14 @@ public class AdminServiceImpl implements AdminService {
                 }
             }
 
-        // TODO: Anda y se actualiza en la H2 pero revienta cuando lo queremos mostrar en POSTMAN
+        //TODO: Asignar una licencia disponible
+
         solicitud.setLicencia(licencia);
         solicitudRepository.save(solicitud);
 
         return new ResponseEntity<>(solicitud, HttpStatus.OK);
-        //return new ResponseEntity<>("OK", HttpStatus.OK);
 
     }
-
-
 
 
 
