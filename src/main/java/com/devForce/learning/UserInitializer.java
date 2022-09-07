@@ -152,6 +152,7 @@ public class UserInitializer implements CommandLineRunner {
                 licencia.setOccupation("asignada");
                 licencia.setExpdate(LocalDateTime.now().plusWeeks(3));
                 licencia.setPlatform("Udemy");
+                licencia.setSolicitudes(new ArrayList<>());
 
                 System.out.println(licencia.toString());
 
@@ -164,6 +165,7 @@ public class UserInitializer implements CommandLineRunner {
             List<Solicitud> list = new ArrayList<>();
             list.add(solicitudRepository.findById(1L));
             licenciaPrueba.setSolicitudes(list);
+            licenciaRepository.save(licenciaPrueba);
 
             log.info("Finished with data initialization");
 

@@ -39,10 +39,10 @@ public class Solicitud {
     private Usuario usuario;
 
     //Relación con licencia
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="licencia_id")
     private Licencia licencia;
-
 
     //@JsonIgnore
     public Usuario getUsuario() {

@@ -12,6 +12,6 @@ public interface AdminService {
 
     public void addUsuario(Usuario usuario);
 
-    public ResponseEntity<String> asignarLicencia(Solicitud solicitud, Licencia licencia);
+    public ResponseEntity<?> asignarLicencia(Solicitud solicitud, Licencia licencia);
 
 }

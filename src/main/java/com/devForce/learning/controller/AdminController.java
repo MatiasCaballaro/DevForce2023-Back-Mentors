@@ -42,7 +42,7 @@ public class AdminController {
 
     //TODO: Averiguar como pasarle la licencia al método y hacerlo funcar. Agregar parametro cantidad de dias y preguntar si está bien lo del Serial
     @PostMapping("/asignarLicencia")
-    public ResponseEntity<String> licenciaAsignadaAUsuario(@RequestBody Solicitud solicitud, @RequestParam String serial) throws Exception {
+    public ResponseEntity<?> licenciaAsignadaAUsuario(@RequestBody Solicitud solicitud, @RequestParam String serial) throws Exception {
         return adminservice.asignarLicencia(solicitud, licenciaRepository.findBySerial(serial));
     }
 

@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -30,6 +32,7 @@ public class AdminServiceImpl implements AdminService {
 
 
     @Override
+    //TODO pasar String a ?
     public ResponseEntity<String> crearUsuario(Usuario usuario) {
         //TODO: Chequear que soy un usuario Admin
         Usuario usuarioYaExiste=usuarioRepository.findByNombreAndApellido(usuario.getNombre(), usuario.getApellido());
@@ -59,57 +62,35 @@ public class AdminServiceImpl implements AdminService {
 
     //TODO: Realizar el mètodo de asignar licencia
     @Override
-    public ResponseEntity<String> asignarLicencia(Solicitud solicitud, Licencia licencia) {
+    public ResponseEntity<?> asignarLicencia(Solicitud solicitud, Licencia licencia) {
         // VERIFICAR que el usuario logueado sea admin
 
         // AGREGO ESTO PARA TESTING SOLAMENTE, DESPUES BORRAR
         solicitud.setEstado("PENDIENTE-ADMIN");
-
         System.out.println("El usuario de la solicitud es: " + solicitud.getUsuario());
 
-        //if (  ) {
-
-            // Buscamos si el usuario ya tenía una licencia
-            List<Solicitud> solicitudesAceptadas = solicitudRepository.findByUsuarioAndEstado(solicitud.getUsuario(), "PENDIENTE-ADMIN");
+        // Buscamos si el usuario ya tenía una licencia
+        List<Solicitud> solicitudesAceptadas = solicitudRepository.findByUsuarioAndEstado(solicitud.getUsuario(), "PENDIENTE-ADMIN");
 
             for (Solicitud solicitudAux : solicitudesAceptadas){
-
                 if (solicitudAux.getLicencia() != null){
-
                     // verificar que la licencia no esté fuera de plazo
-                    // TODO: CONSULTAR A MATI SI EXPDATE SE REFIERE A LA FECHA HASTA LA QUE LA LICENCIA LE PERTENECE A UN USUARIO. O SI ES UN VENCIMIENTO DE UDEMY Y DEJA DE SER DE GIRE.
-                    if (licencia.getExpdate().isBefore(LocalDateTime.now())) {
-                        return new ResponseEntity<>("Licencia vencida",HttpStatus.BAD_REQUEST);
-                    }
-
-                    if (solicitudAux.getLicencia().equals(licencia)){
-                        return new ResponseEntity<>("Usuario ya tiene asignada esta licencia", HttpStatus.BAD_REQUEST);
-                    } else {
-                        return new ResponseEntity<>("Usuario ya tiene asignada una licencia", HttpStatus.BAD_REQUEST);
+                    if (!licencia.getExpdate().isBefore(LocalDateTime.now())) {
+                       //TODO Nuevo método extender tiempo de la misma licencia
                     }
                 }
-
             }
 
+        // TODO: Anda y se actualiza en la H2 pero revienta cuando lo queremos mostrar en POSTMAN
+        solicitud.setLicencia(licencia);
+        solicitudRepository.save(solicitud);
 
-            // TODO: Anda y se actualiza en la H2 pero revienta cuando lo queremos mostrar en POSTMAN
-            solicitud.setLicencia(licencia);
-            List<Solicitud> listaAux = new ArrayList<>();
-            listaAux.add(solicitud);
-            licencia.setSolicitudes(listaAux);
-
-            usuarioRepository.save(solicitud.getUsuario());
-            solicitudRepository.save(solicitud);
-            licenciaRepository.save(licencia);
-
-            return new ResponseEntity<>("OK", HttpStatus.OK);
-        /*
-        } else {
-
-        }
-        */
+        return new ResponseEntity<>(solicitud, HttpStatus.OK);
+        //return new ResponseEntity<>("OK", HttpStatus.OK);
 
     }
+
+
 
 
 
