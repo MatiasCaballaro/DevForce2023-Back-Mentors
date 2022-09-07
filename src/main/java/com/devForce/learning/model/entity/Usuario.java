@@ -1,5 +1,6 @@
 package com.devForce.learning.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -48,9 +49,13 @@ public class Usuario {
     @OneToMany(mappedBy="usuario", fetch=FetchType.EAGER)
     private List<Solicitud> solicitudes;
 
+    @JsonIgnore
+    public List<Solicitud> getSolicitudes() {
+        return solicitudes;
+    }
 
 
-    //Constructor
+//Constructor
 
 
     public Usuario(String nombre, String apellido, String username, String mail, String password, String phone, String rol, Boolean hasTeams) {

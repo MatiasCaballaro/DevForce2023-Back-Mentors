@@ -59,19 +59,22 @@ public class AdminServiceImpl implements AdminService {
 
     //TODO: Realizar el mètodo de asignar licencia
     @Override
-    public ResponseEntity<String> asignarLicencia(Usuario usuario, Licencia licencia) {
-        // Verificar que el usuario logueado sea admin
+    public ResponseEntity<String> asignarLicencia(Solicitud solicitud, Licencia licencia) {
+        // VERIFICAR que el usuario logueado sea admin
 
-        //
+        // AGREGO ESTO PARA TESTING SOLAMENTE, DESPUES BORRAR
+        solicitud.setEstado("PENDIENTE-ADMIN");
+
+        System.out.println("El usuario de la solicitud es: " + solicitud.getUsuario());
 
         //if (  ) {
-            // usuario tiene licencia?
-            List<Solicitud> solicitudesAceptadas = solicitudRepository.findByUsuarioAndEstado(usuario, "ACEPTADO");
 
-            for (Solicitud solicitud : solicitudesAceptadas){
-                //(solicitud.getLicencia() != null) ? ((solicitud.getLicencia().equals(licencia)) ? break : continue) : continue;
+            // Buscamos si el usuario ya tenía una licencia
+            List<Solicitud> solicitudesAceptadas = solicitudRepository.findByUsuarioAndEstado(solicitud.getUsuario(), "PENDIENTE-ADMIN");
 
-                if (solicitud.getLicencia() != null){
+            for (Solicitud solicitudAux : solicitudesAceptadas){
+
+                if (solicitudAux.getLicencia() != null){
 
                     // verificar que la licencia no esté fuera de plazo
                     // TODO: CONSULTAR A MATI SI EXPDATE SE REFIERE A LA FECHA HASTA LA QUE LA LICENCIA LE PERTENECE A UN USUARIO. O SI ES UN VENCIMIENTO DE UDEMY Y DEJA DE SER DE GIRE.
@@ -79,7 +82,7 @@ public class AdminServiceImpl implements AdminService {
                         return new ResponseEntity<>("Licencia vencida",HttpStatus.BAD_REQUEST);
                     }
 
-                    if (solicitud.getLicencia().equals(licencia)){
+                    if (solicitudAux.getLicencia().equals(licencia)){
                         return new ResponseEntity<>("Usuario ya tiene asignada esta licencia", HttpStatus.BAD_REQUEST);
                     } else {
                         return new ResponseEntity<>("Usuario ya tiene asignada una licencia", HttpStatus.BAD_REQUEST);
@@ -90,18 +93,13 @@ public class AdminServiceImpl implements AdminService {
 
 
             // TODO: Anda y se actualiza en la H2 pero revienta cuando lo queremos mostrar en POSTMAN
-            Long idMax = solicitudesAceptadas.stream().map(Solicitud::getId).max(Long::compare).get();
-
-            System.out.println("El idMax es: " + idMax);
-            Solicitud solicitudIdMax = solicitudesAceptadas.stream().filter(solicitud -> solicitud.getId() == idMax).findAny().get();
-            solicitudIdMax.setLicencia(licencia);
-
+            solicitud.setLicencia(licencia);
             List<Solicitud> listaAux = new ArrayList<>();
-            listaAux.add(solicitudIdMax);
-
+            listaAux.add(solicitud);
             licencia.setSolicitudes(listaAux);
-            usuarioRepository.save(usuario);
-            solicitudRepository.save(solicitudIdMax);
+
+            usuarioRepository.save(solicitud.getUsuario());
+            solicitudRepository.save(solicitud);
             licenciaRepository.save(licencia);
 
             return new ResponseEntity<>("OK", HttpStatus.OK);

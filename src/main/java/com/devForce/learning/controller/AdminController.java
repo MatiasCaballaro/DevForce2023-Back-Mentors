@@ -1,6 +1,7 @@
 package com.devForce.learning.controller;
 
 import com.devForce.learning.model.entity.Licencia;
+import com.devForce.learning.model.entity.Solicitud;
 import com.devForce.learning.model.entity.Usuario;
 import com.devForce.learning.repository.LicenciaRepository;
 import com.devForce.learning.repository.SolicitudRepository;
@@ -41,16 +42,8 @@ public class AdminController {
 
     //TODO: Averiguar como pasarle la licencia al método y hacerlo funcar. Agregar parametro cantidad de dias y preguntar si está bien lo del Serial
     @PostMapping("/asignarLicencia")
-    public ResponseEntity<String> licenciaAsignadaAUsuario(@RequestBody Usuario usuario, @RequestParam String serial) throws Exception {
-        System.out.println("HOLA ENTRÉ");
-
-        System.out.println("El usuario es: " + usuario);
-        System.out.println("La licencia es: " + licenciaRepository.findBySerial(serial));
-        System.out.println(Arrays.toString(licenciaRepository.findAll().toArray()));
-
-        System.out.println("El serial es: " + serial);
-
-        return adminservice.asignarLicencia(usuario, licenciaRepository.findBySerial(serial));
+    public ResponseEntity<String> licenciaAsignadaAUsuario(@RequestBody Solicitud solicitud, @RequestParam String serial) throws Exception {
+        return adminservice.asignarLicencia(solicitud, licenciaRepository.findBySerial(serial));
     }
 
     @GetMapping("/licencias")

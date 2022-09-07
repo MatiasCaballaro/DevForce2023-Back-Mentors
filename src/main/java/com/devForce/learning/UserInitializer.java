@@ -113,6 +113,7 @@ public class UserInitializer implements CommandLineRunner {
                 solicitud.setDescripcion(faker.chuckNorris().fact());
                 //solicitud.setApruebaMentorID();
                 //solicitud.setApruebaAdminID();
+
                 solicitud.setEstado("ACEPTADO");
                 solicitud.setUsuario(usuarioRepository.findAll().stream().findAny().orElse(null));
                 System.out.println(solicitud.toString());
@@ -159,7 +160,10 @@ public class UserInitializer implements CommandLineRunner {
 
             Licencia licenciaPrueba= licenciaRepository.findById(1L);
             System.out.println("licenciaPrueba = " + licenciaPrueba);
-            licenciaPrueba.setSolicitudes((List<Solicitud>) solicitudRepository.findById(1L));
+
+            List<Solicitud> list = new ArrayList<>();
+            list.add(solicitudRepository.findById(1L));
+            licenciaPrueba.setSolicitudes(list);
 
             log.info("Finished with data initialization");
 

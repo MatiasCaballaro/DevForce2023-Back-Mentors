@@ -44,7 +44,7 @@ public class Solicitud {
     private Licencia licencia;
 
 
-    @JsonIgnore
+    //@JsonIgnore
     public Usuario getUsuario() {
         return usuario;
     }

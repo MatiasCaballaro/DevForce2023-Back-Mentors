@@ -5,8 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface LicenciaRepository extends JpaRepository <Licencia, Long> {
 
-
     Licencia findById(long id);
-
     Licencia findBySerial(String serial);
 }

@@ -4,6 +4,7 @@ import com.devForce.learning.model.entity.Solicitud;
 import com.devForce.learning.model.entity.Usuario;
 import lombok.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -17,7 +18,7 @@ public class UsuarioDTO {
 
     private String nombre, apellido, username, mail, phone, rol;
 
-    private Set<Solicitud> solicitudes;
+    private List<Solicitud> solicitudes;
 
     private boolean hasTeams;
 
