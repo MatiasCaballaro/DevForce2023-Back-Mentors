@@ -1,5 +1,6 @@
 package com.devForce.learning.service.impl;
 
+import com.devForce.learning.model.dto.RespuestaDTO;
 import com.devForce.learning.model.entity.Licencia;
 import com.devForce.learning.model.entity.Solicitud;
 import com.devForce.learning.model.entity.Usuario;
@@ -8,17 +9,13 @@ import com.devForce.learning.repository.SolicitudRepository;
 import com.devForce.learning.repository.UsuarioRepository;
 import com.devForce.learning.service.AdminService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.logging.log4j.util.EnglishEnums;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Slf4j
@@ -97,7 +94,14 @@ public class AdminServiceImpl implements AdminService {
         licenciaRepository.save(licencia);
         solicitud=solicitudRepository.findById(solicitud.getId());
 
-        return new ResponseEntity<>(solicitud, HttpStatus.OK);
+        // *************** PRUEBA RESPUESTA DTO ****************
+
+        RespuestaDTO respuestaDTO = new RespuestaDTO();
+
+        respuestaDTO.setContent(solicitud);
+        respuestaDTO.setOk(true);
+
+        return new ResponseEntity<>(respuestaDTO, HttpStatus.OK);
     }
 
 }

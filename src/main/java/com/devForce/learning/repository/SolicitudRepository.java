@@ -10,6 +10,8 @@ import java.util.List;
 public interface SolicitudRepository extends JpaRepository<Solicitud,Long> {
 
     Solicitud findById (long Id);
+
+    //List<Solicitud> findByIdUsuario (long IdUsuario);
     List<Solicitud> findByUsuarioAndEstado (Usuario usuario,String estado);
 
 }

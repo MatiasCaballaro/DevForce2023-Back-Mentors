@@ -44,6 +44,9 @@ public class Usuario {
     @Column(name = "hasTeams")
     private Boolean hasTeams;
 
+    @Column(name = "mentorArea", length = 25)
+    private String mentorArea;
+
 
     //Relación con solicitud
     @OneToMany(mappedBy="usuario", fetch=FetchType.EAGER)
