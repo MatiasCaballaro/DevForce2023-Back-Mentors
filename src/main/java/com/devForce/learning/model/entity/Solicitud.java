@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -32,6 +34,11 @@ public class Solicitud {
     @Column(name = "estado", length = 25, nullable = false)
     private String estado;
 
+    @Column(name = "area", length = 50)
+    private String area;
+
+    @Column(name = "tiempoSolicitado", length = 25)
+    private LocalDate tiempoSolicitado;
 
     //Relación con usuario
     @ManyToOne(fetch = FetchType.EAGER)
@@ -57,13 +64,13 @@ public class Solicitud {
     public String toString() {
         return "Solicitud{" +
                 "id=" + id +
-                //", tipo='" + tipo + '\'' +
-                //", descripcion='" + descripcion + '\'' +
-                //", apruebaMentorID=" + apruebaMentorID +
-                //", apruebaAdminID=" + apruebaAdminID +
+                ", tipo='" + tipo + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", apruebaMentorID=" + apruebaMentorID +
+                ", apruebaAdminID=" + apruebaAdminID +
                 ", estado='" + estado + '\'' +
-                ", usuario=" + usuario +
-                //", licencia=" + licencia +
+                ", usuario=" + usuario.getId() +
+                ", licencia=" + licencia +
                 '}';
     }
 }

@@ -114,7 +114,8 @@ public class UserInitializer implements CommandLineRunner {
                 //solicitud.setApruebaMentorID();
                 //solicitud.setApruebaAdminID();
 
-                solicitud.setEstado("ACEPTADO");
+                solicitud.setEstado("PENDIENTE-MENTOR");
+                solicitud.setArea("BACKEND DEVELOPMENT");
                 solicitud.setUsuario(usuarioRepository.findAll().stream().findAny().orElse(null));
                 System.out.println(solicitud.toString());
 
@@ -134,13 +135,9 @@ public class UserInitializer implements CommandLineRunner {
             solicitudRepository.save(solicitud);*/
 
 
-
-
             /* CREACION DE LICENCIAS */
 
             System.out.println("---------- LICENCIAS ----------");
-
-
 
             for (int k = 1; k <11; k++) {
                 List<Solicitud> list = null;
@@ -149,7 +146,7 @@ public class UserInitializer implements CommandLineRunner {
                 licencia.setId(k);
                 licencia.setSerial(faker.bothify("????##?###???###"));
                 licencia.setSolicitudes(list);
-                licencia.setOccupation("asignada");
+                licencia.setOccupation("DISPONIBLE");
                 licencia.setExpdate(LocalDateTime.now().plusWeeks(3));
                 licencia.setPlatform("Udemy");
                 licencia.setSolicitudes(new ArrayList<>());
@@ -161,11 +158,6 @@ public class UserInitializer implements CommandLineRunner {
 
             Licencia licenciaPrueba= licenciaRepository.findById(1L);
             System.out.println("licenciaPrueba = " + licenciaPrueba);
-
-            List<Solicitud> list = new ArrayList<>();
-            list.add(solicitudRepository.findById(1L));
-            licenciaPrueba.setSolicitudes(list);
-            licenciaRepository.save(licenciaPrueba);
 
             log.info("Finished with data initialization");
 

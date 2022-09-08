@@ -8,10 +8,10 @@ import org.springframework.http.ResponseEntity;
 
 public interface AdminService {
 
-    public ResponseEntity<String> crearUsuario(Usuario usuario);
+    public ResponseEntity<?> crearUsuario(Usuario usuario);
 
     public void addUsuario(Usuario usuario);
 
-    public ResponseEntity<?> asignarLicencia(Solicitud solicitud, Licencia licencia);
+    public ResponseEntity<?> asignarLicencia(Solicitud solicitud);
 
 }

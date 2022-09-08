@@ -1,9 +1,6 @@
 package com.devForce.learning.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@ToString (exclude = { "solicitudes"})
 @Table(name = "licencia")
 public class Licencia {
 
@@ -37,15 +35,5 @@ public class Licencia {
     @OneToMany(mappedBy="licencia", fetch=FetchType.EAGER)
     private List<Solicitud> solicitudes;
 
-    @Override
-    public String toString() {
-        return "Licencia{" +
-                "id=" + id +
-                ", serial='" + serial + '\'' +
-                //", occupation='" + occupation + '\'' +
-                //", expdate=" + expdate +
-                //", platform='" + platform + '\'' +
-                //", solicitudes=" + solicitudes +
-                '}';
-    }
+
 }

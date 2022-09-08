@@ -7,6 +7,7 @@ import com.devForce.learning.repository.LicenciaRepository;
 import com.devForce.learning.repository.SolicitudRepository;
 import com.devForce.learning.repository.UsuarioRepository;
 import com.devForce.learning.service.AdminService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.EnglishEnums;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class AdminServiceImpl implements AdminService {
 
     @Autowired
@@ -33,16 +35,19 @@ public class AdminServiceImpl implements AdminService {
 
 
     @Override
-    //TODO pasar String a ?
-    public ResponseEntity<String> crearUsuario(Usuario usuario) {
+    //TODO Consultar con front cómo espera se espera un error de tipo USUARIO EXISTE O NO TIENE PERMISOS?
+    public ResponseEntity<?> crearUsuario(Usuario usuario) {
+        log.info("Intentando guardar usuario...");
         //TODO: Chequear que soy un usuario Admin
-        Usuario usuarioYaExiste=usuarioRepository.findByNombreAndApellido(usuario.getNombre(), usuario.getApellido());
+        Usuario usuarioYaExiste = usuarioRepository.findByNombreAndApellido(usuario.getNombre(), usuario.getApellido());
         if(usuarioYaExiste==null) {
             addUsuario(usuario);
-            return new ResponseEntity<>("Usuario Creado", HttpStatus.CREATED);
+            log.info("Usuario creado");
+            return new ResponseEntity<>(usuarioRepository.findByNombreAndApellido(usuario.getNombre(), usuario.getApellido()), HttpStatus.CREATED);
         }
         else {
-            return new ResponseEntity<>("Usuario ya existe", HttpStatus.BAD_REQUEST);
+            log.info("Usuario no se ha podido crear - Duplicado");
+            return new ResponseEntity<>("Usuario ya existe", HttpStatus.CONFLICT);
         }
     }
 
@@ -63,7 +68,7 @@ public class AdminServiceImpl implements AdminService {
 
     //TODO: Terminar asignarLicenciaMétodo
     @Override
-    public ResponseEntity<?> asignarLicencia(Solicitud solicitud, Licencia licencia) {
+    public ResponseEntity<?> asignarLicencia(Solicitud solicitud) {
         // TODO VERIFICAR que el usuario logueado sea admin
 
         // AGREGO ESTO PARA TESTING SOLAMENTE, DESPUES BORRAR
@@ -77,21 +82,22 @@ public class AdminServiceImpl implements AdminService {
             for (Solicitud solicitudAux : solicitudesAceptadas){
                 if (solicitudAux.getLicencia() != null){
                     // verificar que la licencia no esté fuera de plazo
-                    if (!licencia.getExpdate().isBefore(LocalDateTime.now())) {
+                    if (!solicitudAux.getLicencia().getExpdate().isBefore(LocalDateTime.now())) {
                        //TODO Nuevo método extender tiempo de la misma licencia
                     }
                 }
             }
 
         //TODO: Asignar una licencia disponible
-
+        Licencia licencia = licenciaRepository.findFirstByOccupationOrderById("DISPONIBLE");
         solicitud.setLicencia(licencia);
+        solicitud.setEstado("ACEPTADA");
         solicitudRepository.save(solicitud);
+        licencia.setOccupation("ASIGNADA");
+        licenciaRepository.save(licencia);
+        solicitud=solicitudRepository.findById(solicitud.getId());
 
         return new ResponseEntity<>(solicitud, HttpStatus.OK);
-
     }
-
-
 
 }
