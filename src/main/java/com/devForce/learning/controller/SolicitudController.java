@@ -1,9 +1,12 @@
 package com.devForce.learning.controller;
 
+import com.devForce.learning.model.dto.RespuestaDTO;
+import com.devForce.learning.model.dto.SolicitudUsuarioDTO;
 import com.devForce.learning.model.entity.Solicitud;
 import com.devForce.learning.model.entity.Usuario;
 import com.devForce.learning.repository.SolicitudRepository;
 import com.devForce.learning.repository.UsuarioRepository;
+import com.devForce.learning.service.SolicitudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
@@ -24,6 +27,9 @@ public class SolicitudController {
     @Autowired
     UsuarioRepository usuarioRepository;
 
+    @Autowired
+    SolicitudService solicitudService;
+
     @GetMapping("/solicitudes")
     public List<Solicitud> allSolicitudes() {
         return solicitudRepository
@@ -33,24 +39,20 @@ public class SolicitudController {
     }
 
     @GetMapping("/solicitudesFiltradas")
-    public List<Solicitud> userSolicitudes(@RequestParam Long idUsuario) {
+    public ResponseEntity<?> userSolicitudes(@RequestParam Long idUsuario) {
 
         Usuario usuario = usuarioRepository.findById(idUsuario).orElse(null);
 
+        usuario.setRol(usuario.getRol().toUpperCase());
+
         if(usuario != null) {
-
             if (usuario.getRol().equals("USUARIO"))
-                return usuario.getSolicitudes();
+                return solicitudService.devolverSolicitudesUsuario(usuario);
             else
-                return solicitudRepository.findAll();
-
+                return solicitudService.devolverSolicitudesMentorAdmin(usuario);
         } else {
-            return null;
+            return solicitudService.error("El usuario es nulo");
         }
-
-
-
-
     }
 
     @PostMapping("/nuevaSolicitud")
