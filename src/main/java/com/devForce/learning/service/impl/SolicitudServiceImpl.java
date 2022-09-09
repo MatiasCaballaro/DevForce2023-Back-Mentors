@@ -54,7 +54,7 @@ public class SolicitudServiceImpl implements SolicitudService {
 
     @Override
     public ResponseEntity<?> devolverSolicitudesMentorAdmin(Usuario usuario) {
-        //TODO: Verificar que el usuario es el logueado
+        //TODO: Verificar que el usuario está logueado
         List<Solicitud> listaSolicitudes = solicitudRepository.findAll();
         RespuestaDTO respuestaDTO = new RespuestaDTO();
         respuestaDTO.setOk(true);
