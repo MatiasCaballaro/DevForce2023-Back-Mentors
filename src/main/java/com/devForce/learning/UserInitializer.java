@@ -144,11 +144,11 @@ public class UserInitializer implements CommandLineRunner {
                 Licencia licencia = new Licencia();
 
                 licencia.setId(k);
-                licencia.setSerial(faker.bothify("????##?###???###"));
+                licencia.setSerie(faker.bothify("????##?###???###"));
                 licencia.setSolicitudes(list);
-                licencia.setOccupation("DISPONIBLE");
-                licencia.setExpdate(LocalDateTime.now().plusWeeks(3));
-                licencia.setPlatform("Udemy");
+                licencia.setEstado("DISPONIBLE");
+                licencia.setVencimiento(LocalDateTime.now().plusWeeks(3));
+                licencia.setPlataforma("Udemy");
                 licencia.setSolicitudes(new ArrayList<>());
 
                 System.out.println(licencia.toString());

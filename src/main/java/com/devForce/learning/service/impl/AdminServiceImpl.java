@@ -79,18 +79,18 @@ public class AdminServiceImpl implements AdminService {
             for (Solicitud solicitudAux : solicitudesAceptadas){
                 if (solicitudAux.getLicencia() != null){
                     // verificar que la licencia no esté fuera de plazo
-                    if (!solicitudAux.getLicencia().getExpdate().isBefore(LocalDateTime.now())) {
+                    if (!solicitudAux.getLicencia().getVencimiento().isBefore(LocalDateTime.now())) {
                        //TODO Nuevo método extender tiempo de la misma licencia
                     }
                 }
             }
 
         //TODO: Asignar una licencia disponible
-        Licencia licencia = licenciaRepository.findFirstByOccupationOrderById("DISPONIBLE");
+        Licencia licencia = licenciaRepository.findFirstByEstadoOrderById("DISPONIBLE");
         solicitud.setLicencia(licencia);
         solicitud.setEstado("ACEPTADA");
         solicitudRepository.save(solicitud);
-        licencia.setOccupation("ASIGNADA");
+        licencia.setEstado("ASIGNADA");
         licenciaRepository.save(licencia);
         solicitud=solicitudRepository.findById(solicitud.getId());
 
@@ -98,7 +98,7 @@ public class AdminServiceImpl implements AdminService {
 
         RespuestaDTO respuestaDTO = new RespuestaDTO();
 
-        respuestaDTO.setContent(solicitud);
+        respuestaDTO.setContenido(solicitud);
         respuestaDTO.setOk(true);
 
         return new ResponseEntity<>(respuestaDTO, HttpStatus.OK);

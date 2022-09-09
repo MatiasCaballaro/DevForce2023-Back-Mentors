@@ -9,10 +9,9 @@ import java.util.List;
 public interface LicenciaRepository extends JpaRepository <Licencia, Long> {
 
     Licencia findById(long id);
-    Licencia findBySerial(String serial);
 
-    Licencia findFirstByOccupationOrderById(String occupation);
-    List<Licencia> findByOccupation(String occupation);
+    Licencia findFirstByEstadoOrderById(String estado);
+    List<Licencia> findByEstado(String estado);
 
 
 

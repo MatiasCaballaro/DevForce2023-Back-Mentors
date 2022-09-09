@@ -19,17 +19,17 @@ public class Licencia {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "serial", length = 255)
-    private String serial;
+    @Column(name = "serie", length = 255)
+    private String serie;
 
-    @Column(name = "occupation", length = 25)
-    private String occupation;
+    @Column(name = "estado", length = 25)
+    private String estado;
 
-    @Column(name = "expdate")
-    private LocalDateTime expdate;
+    @Column(name = "vencimiento")
+    private LocalDateTime vencimiento;
 
-    @Column(name = "platform", length = 25)
-    private String platform;
+    @Column(name = "plataforma", length = 25)
+    private String plataforma;
 
     //Relación con solicitud
     @OneToMany(mappedBy="licencia", fetch=FetchType.EAGER)
