@@ -84,6 +84,24 @@ public class SolicitudServiceImpl implements SolicitudService {
     }
 
     @Override
+    public ResponseEntity<?> getTiposDeSolicitud() {
+        RespuestaDTO respuestaDTO = new RespuestaDTO();
+        respuestaDTO.setOk(true);
+        respuestaDTO.setMensaje("");
+        // TODO: Preguntar dónde estarían estos datos
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<?> getAreasDeSolicitud() {
+        RespuestaDTO respuestaDTO = new RespuestaDTO();
+        respuestaDTO.setOk(true);
+        respuestaDTO.setMensaje("");
+        // TODO: Preguntar dónde estarían estos datos
+        return null;
+    }
+
+    @Override
     public ResponseEntity<?> error(String mensaje) {
         RespuestaDTO respuestaDTO = new RespuestaDTO();
         respuestaDTO.setOk(false);

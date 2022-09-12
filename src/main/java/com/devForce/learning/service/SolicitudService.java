@@ -13,4 +13,8 @@ public interface SolicitudService {
     public ResponseEntity<?> devolverSolicitudesMentorAdmin(Usuario usuario);
 
     public ResponseEntity<?> error(String mensaje);
+
+    public ResponseEntity<?> getTiposDeSolicitud();
+
+    public ResponseEntity<?> getAreasDeSolicitud();
 }
