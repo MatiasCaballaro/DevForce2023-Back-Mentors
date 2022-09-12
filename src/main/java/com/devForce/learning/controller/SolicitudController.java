@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,12 +33,11 @@ public class SolicitudController {
 
     @GetMapping("/solicitudes")
     public List<Solicitud> allSolicitudes() {
-        return solicitudRepository
-                .findAll()
-                .stream()
-                .collect(Collectors.toList());
+        return new ArrayList<>(solicitudRepository.findAll());
     }
 
+    // TODO Hacer un método para esta lógica en Solicitud Service y que este nuevo método llame a los otros dos
+    // Es necesario que las devoluciones de búsqueda pasen por la respuestaDTO??
     @GetMapping("/solicitudesFiltradas")
     public ResponseEntity<?> userSolicitudes(@RequestParam Long idUsuario) {
 

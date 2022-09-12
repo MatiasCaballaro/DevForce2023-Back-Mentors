@@ -1,35 +1,18 @@
 package com.devForce.learning.controller;
 
-import com.devForce.learning.model.entity.Licencia;
-import com.devForce.learning.model.entity.Solicitud;
-import com.devForce.learning.model.entity.Usuario;
-import com.devForce.learning.repository.LicenciaRepository;
-import com.devForce.learning.repository.SolicitudRepository;
-import com.devForce.learning.repository.UsuarioRepository;
-import com.devForce.learning.service.AdminService;
-import com.devForce.learning.service.MentorService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
 public class MentorController {
 
-    @Autowired
-    UsuarioRepository usuarioRepository;
-
-    @Autowired
-    SolicitudRepository solicitudRepository;
-
-    @Autowired
-    LicenciaRepository licenciaRepository;
-
-    @Autowired
-    MentorService mentorService;
+    //TODO hacer método para que el mentor pase la solicitud a "PENDIENTE MENTOR"
+    // (tiene que pasar un int para los días, el cual tambien puede ser 0)
+    // Tiene que devolver una respuesta DTO
 
 
+
+    //TODO hacer método para que el mentor pase la solicitud a "DEVUELTO-USER"
+    // Tiene que devolver una respuesta DTO
 }

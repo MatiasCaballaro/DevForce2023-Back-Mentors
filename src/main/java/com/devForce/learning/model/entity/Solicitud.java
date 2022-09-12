@@ -38,7 +38,7 @@ public class Solicitud {
     private String area;
 
     @Column(name = "tiempoSolicitado", length = 25)
-    private LocalDate tiempoSolicitado;
+    private int tiempoSolicitado;
 
     //Relación con usuario
     @ManyToOne(fetch = FetchType.EAGER)

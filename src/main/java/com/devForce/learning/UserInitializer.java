@@ -7,6 +7,7 @@ import com.devForce.learning.model.entity.Usuario;
 import com.devForce.learning.repository.LicenciaRepository;
 import com.devForce.learning.repository.SolicitudRepository;
 import com.devForce.learning.repository.UsuarioRepository;
+import com.devForce.learning.service.UsuarioService;
 import com.github.javafaker.Faker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class UserInitializer implements CommandLineRunner {
 
     @Autowired
     private LicenciaRepository licenciaRepository;
+
+    @Autowired
+    private UsuarioService usuarioService;
 
     @Override
     public void run(String[] args) throws Exception {
@@ -96,7 +100,7 @@ public class UserInitializer implements CommandLineRunner {
 
             Usuario usuarioParaPruebaDTO = usuarioRepository.findAll().stream().findFirst().orElse(null);
             System.out.println(usuarioParaPruebaDTO.toString());
-            UsuarioDTO usuarioDTO = crearUsuarioDTO(usuarioParaPruebaDTO);
+            UsuarioDTO usuarioDTO = usuarioService.crearUsuarioDTO(usuarioParaPruebaDTO);
             System.out.println(usuarioDTO);
 
 
@@ -113,7 +117,7 @@ public class UserInitializer implements CommandLineRunner {
                 solicitud.setDescripcion(faker.chuckNorris().fact());
                 //solicitud.setApruebaMentorID();
                 //solicitud.setApruebaAdminID();
-
+                solicitud.setTiempoSolicitado(45);
                 solicitud.setEstado("PENDIENTE-MENTOR");
                 solicitud.setArea("BACKEND DEVELOPMENT");
                 solicitud.setUsuario(usuarioRepository.findAll().stream().findAny().orElse(null));
@@ -147,7 +151,6 @@ public class UserInitializer implements CommandLineRunner {
                 licencia.setSerie(faker.bothify("????##?###???###"));
                 licencia.setSolicitudes(list);
                 licencia.setEstado("DISPONIBLE");
-                licencia.setVencimiento(LocalDateTime.now().plusWeeks(3));
                 licencia.setPlataforma("Udemy");
                 licencia.setSolicitudes(new ArrayList<>());
 
@@ -164,17 +167,5 @@ public class UserInitializer implements CommandLineRunner {
         }
     }
 
-    public UsuarioDTO crearUsuarioDTO(Usuario usuario) {
-        UsuarioDTO dto = new UsuarioDTO();
-        dto.setId(usuario.getId());
-        dto.setNombre(usuario.getNombre());
-        dto.setApellido(usuario.getApellido());
-        dto.setUsername(usuario.getUsername());
-        dto.setMail(usuario.getMail());
-        dto.setPhone(usuario.getPhone());
-        dto.setRol(usuario.getRol());
-        dto.setHasTeams(usuario.getHasTeams());
-        //dto.setSolicitudes(usuario.getSolicitudes());
-        return dto;
-    }
+
 }

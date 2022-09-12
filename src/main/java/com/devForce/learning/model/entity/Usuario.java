@@ -26,6 +26,7 @@ public class Usuario {
     @Column(name = "lastname", length = 50, nullable = false)
     private String apellido;
 
+    //TODO es necesario el username? O trabajamos con el mail?
     @Column(name = "username", length = 50, nullable = false)
     private String username;
 

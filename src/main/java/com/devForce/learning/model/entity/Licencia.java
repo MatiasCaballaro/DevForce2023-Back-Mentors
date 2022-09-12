@@ -3,6 +3,7 @@ package com.devForce.learning.model.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class Licencia {
     private String estado;
 
     @Column(name = "vencimiento")
-    private LocalDateTime vencimiento;
+    private LocalDate vencimiento;
 
     @Column(name = "plataforma", length = 25)
     private String plataforma;
