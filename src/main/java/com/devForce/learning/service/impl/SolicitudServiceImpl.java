@@ -7,6 +7,7 @@ import com.devForce.learning.model.dto.UsuarioSolicitudDTO;
 import com.devForce.learning.model.entity.Solicitud;
 import com.devForce.learning.model.entity.Usuario;
 import com.devForce.learning.repository.SolicitudRepository;
+import com.devForce.learning.repository.UsuarioRepository;
 import com.devForce.learning.service.SolicitudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,9 @@ public class SolicitudServiceImpl implements SolicitudService {
 
     @Autowired
     SolicitudRepository solicitudRepository;
+
+    @Autowired
+    UsuarioRepository usuarioRepository;
 
     @Override
     public ResponseEntity<String> crearSolicitud(Usuario usuario, Solicitud solicitud) {
@@ -102,6 +106,22 @@ public class SolicitudServiceImpl implements SolicitudService {
     }
 
     @Override
+    public ResponseEntity<?> getSolicitudesByIdUsuario(Long idUsuario) {
+        Usuario usuario = usuarioRepository.findById(idUsuario).orElse(null);
+
+        usuario.setRol(usuario.getRol().toUpperCase());
+
+        if(usuario != null) {
+            if (usuario.getRol().equals("USUARIO"))
+                return devolverSolicitudesUsuario(usuario);
+            else
+                return devolverSolicitudesMentorAdmin(usuario);
+        } else {
+            return error("El usuario es nulo");
+        }
+    }
+
+    @Override
     public ResponseEntity<?> error(String mensaje) {
         RespuestaDTO respuestaDTO = new RespuestaDTO();
         respuestaDTO.setOk(false);
@@ -109,4 +129,7 @@ public class SolicitudServiceImpl implements SolicitudService {
         respuestaDTO.setContenido(null);
         return new ResponseEntity<>(respuestaDTO, HttpStatus.BAD_REQUEST);
     }
+
+
+
 }

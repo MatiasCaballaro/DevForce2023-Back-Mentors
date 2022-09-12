@@ -60,8 +60,6 @@ public class Usuario {
 
 
 //Constructor
-
-
     public Usuario(String nombre, String apellido, String username, String mail, String password, String phone, String rol, Boolean hasTeams) {
         this.nombre = nombre;
         this.apellido = apellido;

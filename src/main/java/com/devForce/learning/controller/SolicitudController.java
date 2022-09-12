@@ -40,19 +40,7 @@ public class SolicitudController {
     // Es necesario que las devoluciones de búsqueda pasen por la respuestaDTO??
     @GetMapping("/solicitudesFiltradas")
     public ResponseEntity<?> userSolicitudes(@RequestParam Long idUsuario) {
-
-        Usuario usuario = usuarioRepository.findById(idUsuario).orElse(null);
-
-        usuario.setRol(usuario.getRol().toUpperCase());
-
-        if(usuario != null) {
-            if (usuario.getRol().equals("USUARIO"))
-                return solicitudService.devolverSolicitudesUsuario(usuario);
-            else
-                return solicitudService.devolverSolicitudesMentorAdmin(usuario);
-        } else {
-            return solicitudService.error("El usuario es nulo");
-        }
+        return solicitudService.getSolicitudesByIdUsuario(idUsuario);
     }
 
     @PostMapping("/nuevaSolicitud")

@@ -17,4 +17,6 @@ public interface SolicitudService {
     public ResponseEntity<?> getTiposDeSolicitud();
 
     public ResponseEntity<?> getAreasDeSolicitud();
+
+    public ResponseEntity<?> getSolicitudesByIdUsuario(Long idUsuario);
 }

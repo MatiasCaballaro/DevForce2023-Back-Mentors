@@ -22,5 +22,4 @@ public class UsuarioDTO {
 
     private boolean hasTeams;
 
-
 }

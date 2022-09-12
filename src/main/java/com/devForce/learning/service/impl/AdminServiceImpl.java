@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 @Slf4j
@@ -68,7 +69,7 @@ public class AdminServiceImpl implements AdminService {
                 usuario.getMail(),
                 usuario.getPassword(),
                 usuario.getPhone(),
-                usuario.getRol(),
+                usuario.getRol().toUpperCase(),
                 usuario.getHasTeams()
         );
         usuarioRepository.save(newUsuario);
@@ -89,12 +90,12 @@ public class AdminServiceImpl implements AdminService {
         System.out.println("El usuario de la solicitud es: " + solicitud.getUsuario());
         //
 
-        if(solicitud.getEstado()!="PENDIENTE-ADMIN"){
+        if(!solicitud.getEstado().equals("PENDIENTE-ADMIN")){
             return new ResponseEntity<>(new RespuestaDTO(false,"Estado de solicitud incorrecto", null), HttpStatus.FORBIDDEN);
         }
         // Se buscan solicitudes aceptadas del mismo tipo de solicitud
         // verificar que la licencia no esté vencida. Si ya tiene una licencia activa, se extiende el tiempo de la misma
-        List<Solicitud> solicitudesAceptadas = solicitudRepository.findByUsuarioAndTipoAndEstado(solicitud.getUsuario(), "Udemy", "ACEPTADA");
+        List<Solicitud> solicitudesAceptadas = solicitudRepository.findByUsuarioAndTipoAndEstado(solicitud.getUsuario(), solicitud.getTipo(), "ACEPTADA");
             for (Solicitud solicitudAux : solicitudesAceptadas){
                 if (!solicitudAux.getLicencia().getVencimiento().isBefore(LocalDate.now())) {
                     return darLicencia(solicitud,solicitudAux);
