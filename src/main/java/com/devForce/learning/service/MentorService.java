@@ -13,6 +13,8 @@ public interface MentorService {
 
     public ResponseEntity<?> aceptarSolicitudSimple (Solicitud solicitud);
 
+    public ResponseEntity<?> aceptarSolicitud (Solicitud solicitud, Integer dias);
+
 
 
     }

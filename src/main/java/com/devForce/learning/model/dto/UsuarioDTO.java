@@ -1,11 +1,9 @@
 package com.devForce.learning.model.dto;
 
 import com.devForce.learning.model.entity.Solicitud;
-import com.devForce.learning.model.entity.Usuario;
 import lombok.*;
 
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -18,6 +16,7 @@ public class UsuarioDTO {
 
     private String nombre, apellido, username, mail, phone, rol;
 
+    //TODO: ES solicitudDTO?
     private List<Solicitud> solicitudes;
 
     private boolean hasTeams;

@@ -8,11 +8,9 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class RespuestaDTO {
-
     private boolean ok;
     private String mensaje;
     private Object contenido;
-
 
     // Si el rol es Usuario devolver el tipo, descripcion y estado de sus solicitudes
 

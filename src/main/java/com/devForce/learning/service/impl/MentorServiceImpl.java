@@ -27,6 +27,14 @@ public class MentorServiceImpl implements MentorService {
     @Autowired
     MentorRepository mentorRepository;
 
+    public ResponseEntity<?> aceptarSolicitud (Solicitud solicitud, Integer dias) {
+        if (dias == null)
+            return aceptarSolicitudSimple(solicitud);
+        else
+            return aceptarSolicitudPlataforma(solicitud, dias);
+    }
+
+
     public ResponseEntity<?> aceptarSolicitudPlataforma (Solicitud solicitud, int dias){
         //Verificar como es el estado base de una solicitud
         if(!solicitud.getEstado().equals("PENDIENTE-MENTOR")){
@@ -35,7 +43,6 @@ public class MentorServiceImpl implements MentorService {
         if(solicitud.getTipo().equals("UDEMY")){
             solicitud.setTiempoSolicitado(dias);
             solicitud.setEstado("PENDIENTE-ADMIN");
-
             solicitudRepository.save(solicitud);
             return new ResponseEntity<>(new RespuestaDTO(true,"Solicitud enviada al administrador", null), HttpStatus.OK);
         }
