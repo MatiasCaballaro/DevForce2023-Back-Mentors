@@ -156,4 +156,8 @@ public class AdminServiceImpl implements AdminService {
         }
     }
 
+    public List<Licencia> getLicencias (){
+        return licenciaRepository.findAll();
+    }
+
 }

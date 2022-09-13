@@ -36,7 +36,7 @@ public class AdminController {
 
     @GetMapping("/licencias")
     public List<Licencia> getLicencias() {
-        return new ArrayList<>(licenciaRepository.findAll());
+        return adminservice.getLicencias();
     }
 
 

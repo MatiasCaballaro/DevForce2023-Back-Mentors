@@ -26,6 +26,7 @@ public class SolicitudServiceImpl implements SolicitudService {
     @Autowired
     UsuarioRepository usuarioRepository;
 
+    //TODO: Terminar metodo. Crear la solicitud.
     @Override
     public ResponseEntity<String> crearSolicitud(Usuario usuario, Solicitud solicitud) {
         if (usuario.getRol()=="Usuario"||usuario.getRol()=="Mentor"){
