@@ -43,6 +43,7 @@ public class SolicitudController {
 
         Usuario usuario = usuarioRepository.findById(idUsuario).orElse(null);
 
+        /*
         usuario.setRol(usuario.getRol().toUpperCase());
 
         if(usuario != null) {
@@ -52,7 +53,8 @@ public class SolicitudController {
                 return solicitudService.devolverSolicitudesMentorAdmin(usuario);
         } else {
             return solicitudService.error("El usuario es nulo");
-        }
+        }*/
+        return solicitudService.error("El usuario es nulo");
     }
 
     @PostMapping("/nuevaSolicitud")

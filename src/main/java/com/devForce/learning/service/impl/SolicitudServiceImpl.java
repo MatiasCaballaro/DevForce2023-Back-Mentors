@@ -24,12 +24,13 @@ public class SolicitudServiceImpl implements SolicitudService {
 
     @Override
     public ResponseEntity<String> crearSolicitud(Usuario usuario, Solicitud solicitud) {
-        if (usuario.getRol()=="Usuario"||usuario.getRol()=="Mentor"){
+        /*if (usuario.getRol()=="Usuario"||usuario.getRol()=="Mentor"){
             return new ResponseEntity<String>("Solicitud creada", HttpStatus.CREATED);
         }
         else {
             return new ResponseEntity<String>("No tienes permisos crack", HttpStatus.FORBIDDEN);
-        }
+        }*/
+        return new ResponseEntity<String>("No tienes permisos crack", HttpStatus.FORBIDDEN);
     }
 
     @Override

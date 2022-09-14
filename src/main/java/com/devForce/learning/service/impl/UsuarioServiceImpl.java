@@ -35,7 +35,6 @@ public class UsuarioServiceImpl implements UsuarioService {
         dto.setUsername(usuario.getUsername());
         dto.setMail(usuario.getMail());
         dto.setPhone(usuario.getPhone());
-        dto.setRol(usuario.getRol());
         dto.setHasTeams(usuario.getHasTeams());
         //dto.setSolicitudes(usuario.getSolicitudes());
         return dto;

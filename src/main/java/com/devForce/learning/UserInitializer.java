@@ -58,7 +58,6 @@ public class UserInitializer implements CommandLineRunner {
                 user.setMail(user.getNombre()+"."+user.getApellido()+"@gire.com");
                 user.setPassword(user.getNombre()+"123");
                 user.setPhone(faker.phoneNumber().cellPhone());
-                user.setRol("Usuario");
                 user.setHasTeams(faker.random().nextBoolean());
                 System.out.println(user.toString());
 
@@ -74,7 +73,6 @@ public class UserInitializer implements CommandLineRunner {
             adminUser.setMail((adminUser.getNombre()+"."+adminUser.getApellido()+"@gire.com").toLowerCase());
             adminUser.setPassword(adminUser.getNombre()+"123");
             adminUser.setPhone("123456789");
-            adminUser.setRol("Admin");
             adminUser.setHasTeams(true);
             System.out.println(adminUser.toString());
             usuarioRepository.save(adminUser);
@@ -88,7 +86,6 @@ public class UserInitializer implements CommandLineRunner {
             mentorUser.setMail((mentorUser.getNombre()+"."+mentorUser.getApellido()+"@gire.com").toLowerCase());
             mentorUser.setPassword(mentorUser.getNombre()+"123");
             mentorUser.setPhone("123456789");
-            mentorUser.setRol("Mentor");
             mentorUser.setHasTeams(true);
             System.out.println(mentorUser.toString());
             usuarioRepository.save(mentorUser);

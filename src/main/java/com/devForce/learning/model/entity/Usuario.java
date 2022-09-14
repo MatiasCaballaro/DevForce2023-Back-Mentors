@@ -39,8 +39,6 @@ public class Usuario {
     @Column(name = "phone", length = 50)
     private String phone;
 
-    @Column(name = "rol", length = 25, nullable = false)
-    private String rol;
 
     @Column(name = "hasTeams")
     private Boolean hasTeams;
@@ -62,14 +60,13 @@ public class Usuario {
 //Constructor
 
 
-    public Usuario(String nombre, String apellido, String username, String mail, String password, String phone, String rol, Boolean hasTeams) {
+    public Usuario(String nombre, String apellido, String username, String mail, String password, String phone, Boolean hasTeams) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.username = username;
         this.mail = mail;
         this.password = password;
         this.phone = phone;
-        this.rol = rol;
         this.hasTeams = hasTeams;
     }
 
@@ -83,7 +80,6 @@ public class Usuario {
                 //", mail='" + mail + '\'' +
                 //", password='" + password + '\'' +
                 //", phone='" + phone + '\'' +
-                ", rol='" + rol + '\'' +
                 //", hasTeams=" + hasTeams +
 //                ", solicitudes=" + solicitudes.stream().map(s -> s.getSolicitudId()).collect(Collectors.toList()) +
                 '}';

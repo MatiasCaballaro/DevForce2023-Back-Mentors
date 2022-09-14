@@ -68,7 +68,7 @@ public class AdminServiceImpl implements AdminService {
                 usuario.getMail(),
                 usuario.getPassword(),
                 usuario.getPhone(),
-                usuario.getRol(),
+                //usuario.getRol(),
                 usuario.getHasTeams()
         );
         usuarioRepository.save(newUsuario);
