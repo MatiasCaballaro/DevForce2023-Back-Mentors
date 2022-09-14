@@ -69,7 +69,7 @@ public class SolicitudServiceImpl implements SolicitudService {
             if(solicitud.getUsuario().getId() != usuario.getId()){
                 usuarioSolicitudDTO.setApellido(usuario.getApellido());
                 usuarioSolicitudDTO.setNombre(usuario.getNombre());
-                usuarioSolicitudDTO.setCorreo(usuario.getMail());
+                usuarioSolicitudDTO.setCorreo(usuario.getEmail());
                 usuarioSolicitudDTO.setTel(usuario.getPhone());
                 usuarioSolicitudDTO.setTieneTeams(usuario.getHasTeams());
 

@@ -27,12 +27,11 @@ public class Usuario {
     @Column(name = "lastname", length = 50, nullable = false)
     private String apellido;
 
-    //TODO es necesario el username? O trabajamos con el mail?
     @Column(name = "username", length = 50, nullable = false)
     private String username;
 
-    @Column(name = "mail", length = 100)
-    private String mail;
+    @Column(name = "email", length = 100)
+    private String email;
 
     @Column(name = "password", length = 255, nullable = false)
     private String password;
@@ -64,17 +63,17 @@ public class Usuario {
 
 
 //Constructor
-    public Usuario(String username, String mail, String password) {
+    public Usuario(String username, String email, String password) {
         this.username = username;
-        this.mail = mail;
+        this.email = email;
         this.password = password;
     }
 
-    public Usuario(String nombre, String apellido, String username, String mail, String password, String phone, Boolean hasTeams) {
+    public Usuario(String nombre, String apellido, String username, String email, String password, String phone, Boolean hasTeams) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.username = username;
-        this.mail = mail;
+        this.email = email;
         this.password = password;
         this.phone = phone;
         this.hasTeams = hasTeams;
@@ -87,7 +86,7 @@ public class Usuario {
                 ", nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +
                 //", username='" + username + '\'' +
-                //", mail='" + mail + '\'' +
+                //", email='" + email + '\'' +
                 //", password='" + password + '\'' +
                 //", phone='" + phone + '\'' +
                 //", hasTeams=" + hasTeams +

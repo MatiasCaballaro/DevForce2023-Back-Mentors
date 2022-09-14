@@ -65,7 +65,7 @@ public class AdminServiceImpl implements AdminService {
                 usuario.getNombre(),
                 usuario.getApellido(),
                 usuario.getUsername(),
-                usuario.getMail(),
+                usuario.getEmail(),
                 usuario.getPassword(),
                 usuario.getPhone(),
                 //usuario.getRol(),

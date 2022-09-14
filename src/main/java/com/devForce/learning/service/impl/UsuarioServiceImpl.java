@@ -33,7 +33,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         dto.setNombre(usuario.getNombre());
         dto.setApellido(usuario.getApellido());
         dto.setUsername(usuario.getUsername());
-        dto.setMail(usuario.getMail());
+        dto.setMail(usuario.getEmail());
         dto.setPhone(usuario.getPhone());
         dto.setHasTeams(usuario.getHasTeams());
         //dto.setSolicitudes(usuario.getSolicitudes());

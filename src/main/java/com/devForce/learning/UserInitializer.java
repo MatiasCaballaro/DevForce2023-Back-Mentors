@@ -55,7 +55,7 @@ public class UserInitializer implements CommandLineRunner {
                 user.setNombre(faker.name().firstName());
                 user.setApellido(faker.name().lastName());
                 user.setUsername(user.getNombre()+user.getApellido());
-                user.setMail(user.getNombre()+"."+user.getApellido()+"@gire.com");
+                user.setEmail(user.getNombre()+"."+user.getApellido()+"@gire.com");
                 user.setPassword(user.getNombre()+"123");
                 user.setPhone(faker.phoneNumber().cellPhone());
                 user.setHasTeams(faker.random().nextBoolean());
@@ -70,7 +70,7 @@ public class UserInitializer implements CommandLineRunner {
             adminUser.setNombre("Adrian");
             adminUser.setApellido("Pierro");
             adminUser.setUsername("AdrianPierro");
-            adminUser.setMail((adminUser.getNombre()+"."+adminUser.getApellido()+"@gire.com").toLowerCase());
+            adminUser.setEmail((adminUser.getNombre()+"."+adminUser.getApellido()+"@gire.com").toLowerCase());
             adminUser.setPassword(adminUser.getNombre()+"123");
             adminUser.setPhone("123456789");
             adminUser.setHasTeams(true);
@@ -83,7 +83,7 @@ public class UserInitializer implements CommandLineRunner {
             mentorUser.setNombre("Javier");
             mentorUser.setApellido("Ottina");
             mentorUser.setUsername("JavierOttina");
-            mentorUser.setMail((mentorUser.getNombre()+"."+mentorUser.getApellido()+"@gire.com").toLowerCase());
+            mentorUser.setEmail((mentorUser.getNombre()+"."+mentorUser.getApellido()+"@gire.com").toLowerCase());
             mentorUser.setPassword(mentorUser.getNombre()+"123");
             mentorUser.setPhone("123456789");
             mentorUser.setHasTeams(true);
