@@ -34,7 +34,6 @@ public class MentorServiceImpl implements MentorService {
             return aceptarSolicitudPlataforma(solicitud, dias);
     }
 
-
     public ResponseEntity<?> aceptarSolicitudPlataforma (Solicitud solicitud, int dias){
         //Verificar como es el estado base de una solicitud
         if(!solicitud.getEstado().equals("PENDIENTE-MENTOR")){
@@ -86,9 +85,5 @@ public class MentorServiceImpl implements MentorService {
         return new ResponseEntity<>(new RespuestaDTO(true,"Solicitud devuelta al usuario", null), HttpStatus.OK);
 
     }
-
-
-
-
 
 }

@@ -20,6 +20,4 @@ public class SolicitudDTO {
 
     private UsuarioDTO usuario;
 
-    private LicenciaDTO licencia;
-
 }

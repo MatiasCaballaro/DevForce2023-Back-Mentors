@@ -1,14 +1,12 @@
 package com.devForce.learning.service.impl;
 
-import com.devForce.learning.model.dto.RespuestaDTO;
-import com.devForce.learning.model.dto.SolicitudMentorAdminDTO;
-import com.devForce.learning.model.dto.SolicitudUsuarioDTO;
-import com.devForce.learning.model.dto.UsuarioSolicitudDTO;
+import com.devForce.learning.model.dto.*;
 import com.devForce.learning.model.entity.Solicitud;
 import com.devForce.learning.model.entity.Usuario;
 import com.devForce.learning.repository.SolicitudRepository;
 import com.devForce.learning.repository.UsuarioRepository;
 import com.devForce.learning.service.SolicitudService;
+import com.devForce.learning.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,14 +24,21 @@ public class SolicitudServiceImpl implements SolicitudService {
     @Autowired
     UsuarioRepository usuarioRepository;
 
+    @Autowired
+    UsuarioService usuarioService;
+
     //TODO: Terminar metodo. Crear la solicitud.
     @Override
-    public ResponseEntity<String> crearSolicitud(Usuario usuario, Solicitud solicitud) {
-        if (usuario.getRol()=="Usuario"||usuario.getRol()=="Mentor"){
-            return new ResponseEntity<String>("Solicitud creada", HttpStatus.CREATED);
+    public ResponseEntity<?> crearSolicitud(Usuario usuario, Solicitud solicitud) {
+        if ( usuario.getRol().equals("USUARIO") || usuario.getRol().equals("MENTOR") ){
+
+
+
+
+            return new ResponseEntity<SolicitudDTO>(new SolicitudDTO(), HttpStatus.CREATED);
         }
         else {
-            return new ResponseEntity<String>("No tienes permisos crack", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<SolicitudDTO>(new SolicitudDTO(), HttpStatus.FORBIDDEN);
         }
     }
 
@@ -120,6 +125,23 @@ public class SolicitudServiceImpl implements SolicitudService {
         } else {
             return error("El usuario es nulo");
         }
+    }
+
+    @Override
+    public SolicitudDTO crearSolicitudDTO(Solicitud solicitud) {
+
+        SolicitudDTO dto = new SolicitudDTO();
+        dto.setId(solicitud.getId());
+        dto.setDescripcion(solicitud.getDescripcion());
+        dto.setEstado(solicitud.getEstado());
+        dto.setTipo(solicitud.getTipo());
+        dto.setApruebaAdminID(solicitud.getApruebaAdminID());
+        dto.setApruebaMentorID(solicitud.getApruebaMentorID());
+        dto.setTiempoSolicitado(solicitud.getTiempoSolicitado());
+        dto.setUsuario(usuarioService.crearUsuarioDTO(solicitud.getUsuario()));
+
+
+        return dto;
     }
 
     @Override

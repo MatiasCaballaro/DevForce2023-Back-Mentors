@@ -1,22 +1,17 @@
 package com.devForce.learning.controller;
 
-import com.devForce.learning.model.dto.RespuestaDTO;
-import com.devForce.learning.model.dto.SolicitudUsuarioDTO;
 import com.devForce.learning.model.entity.Solicitud;
 import com.devForce.learning.model.entity.Usuario;
 import com.devForce.learning.repository.SolicitudRepository;
 import com.devForce.learning.repository.UsuarioRepository;
 import com.devForce.learning.service.SolicitudService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -43,6 +38,7 @@ public class SolicitudController {
         return solicitudService.getSolicitudesByIdUsuario(idUsuario);
     }
 
+    //TODO: No se hizo este método
     @PostMapping("/nuevaSolicitud")
     public ResponseEntity<String> nuevaSolicitud (@RequestBody Solicitud solicitud, Usuario usuario){
         //TODO: Hacer la nuevaSolicitud. Tiene que validar que el usuario sea el logueado, y armar una nueva solicitud en estado "PENDIENTE-MENTOR"

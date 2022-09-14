@@ -1,9 +1,11 @@
 package com.devForce.learning.service.impl;
 
 import com.devForce.learning.model.dto.RespuestaDTO;
+import com.devForce.learning.model.dto.SolicitudDTO;
 import com.devForce.learning.model.dto.UsuarioDTO;
 import com.devForce.learning.model.entity.Usuario;
 import com.devForce.learning.repository.UsuarioRepository;
+import com.devForce.learning.service.SolicitudService;
 import com.devForce.learning.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,11 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Autowired
     UsuarioRepository usuarioRepository;
+
+    @Autowired
+    SolicitudService solicitudService;
+
+
 
     //TODO revisar este método (lógica) tal vez pueda funcionar con el id del authentication
     @Override
@@ -57,7 +64,14 @@ public class UsuarioServiceImpl implements UsuarioService {
         dto.setPhone(usuario.getPhone());
         dto.setRol(usuario.getRol());
         dto.setHasTeams(usuario.getHasTeams());
-        //dto.setSolicitudes(usuario.getSolicitudes());
+
+        // TODO: NO PUDE HACERLO
+
+        dto.setSolicitudes(
+                usuario.getSolicitudes()
+                .stream()
+                .map(SolicitudDTO));
+
         return dto;
     }
 
