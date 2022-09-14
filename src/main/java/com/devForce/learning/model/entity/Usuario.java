@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -39,12 +40,17 @@ public class Usuario {
     @Column(name = "phone", length = 50)
     private String phone;
 
-
     @Column(name = "hasTeams")
     private Boolean hasTeams;
 
     @Column(name = "mentorArea", length = 25)
     private String mentorArea;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
 
     //Relación con solicitud
@@ -58,7 +64,11 @@ public class Usuario {
 
 
 //Constructor
-
+    public Usuario(String username, String mail, String password) {
+        this.username = username;
+        this.mail = mail;
+        this.password = password;
+    }
 
     public Usuario(String nombre, String apellido, String username, String mail, String password, String phone, Boolean hasTeams) {
         this.nombre = nombre;
