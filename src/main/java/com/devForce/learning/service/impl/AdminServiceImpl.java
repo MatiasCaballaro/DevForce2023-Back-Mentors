@@ -95,10 +95,14 @@ public class AdminServiceImpl implements AdminService {
                         roles.add(modRole);
 
                         break;
-                    default:
+                    case "user":
                         Role userRole = roleRepository.findByName(ERole.ROLE_USUARIO)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(userRole);
+                    default:
+                        Role defaultRole = roleRepository.findByName(ERole.ROLE_USUARIO)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(defaultRole);
                 }
             });
         }
