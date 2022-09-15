@@ -1,10 +1,8 @@
 package com.devForce.learning.controller;
 
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -32,4 +30,17 @@ public class TestController {
   public String adminAccess() {
     return "Admin Board.";
   }
+
+  @GetMapping("/test")
+  @PreAuthorize("hasRole('USER')")
+  public Object test(Authentication authentication) {
+    return authentication.getDetails();
+  }
+
+  @GetMapping("/test2")
+  @PreAuthorize("hasRole('USER')")
+  public Object test2(Authentication authentication) {
+    return authentication.getPrincipal();
+  }
+
 }
