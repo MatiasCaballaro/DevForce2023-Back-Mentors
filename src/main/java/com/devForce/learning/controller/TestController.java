@@ -14,13 +14,13 @@ public class TestController {
   }
 
   @GetMapping("/user")
-  @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+  @PreAuthorize("hasRole('USUARIO') or hasRole('MENTOR') or hasRole('ADMIN')")
   public String userAccess() {
     return "User Content.";
   }
 
   @GetMapping("/mod")
-  @PreAuthorize("hasRole('MODERATOR')")
+  @PreAuthorize("hasRole('MENTOR')")
   public String moderatorAccess() {
     return "Moderator Board.";
   }
@@ -32,13 +32,13 @@ public class TestController {
   }
 
   @GetMapping("/test")
-  @PreAuthorize("hasRole('USER')")
+  @PreAuthorize("hasRole('USUARIO') or hasRole('MENTOR') or hasRole('ADMIN')")
   public Object test(Authentication authentication) {
     return authentication.getDetails();
   }
 
   @GetMapping("/test2")
-  @PreAuthorize("hasRole('USER')")
+  @PreAuthorize("hasRole('USUARIO') or hasRole('MENTOR') or hasRole('ADMIN')")
   public Object test2(Authentication authentication) {
     return authentication.getPrincipal();
   }

@@ -1,21 +1,27 @@
 package com.devForce.learning.service.impl;
 
 import com.devForce.learning.model.dto.RespuestaDTO;
-import com.devForce.learning.model.entity.Licencia;
-import com.devForce.learning.model.entity.Solicitud;
-import com.devForce.learning.model.entity.Usuario;
+import com.devForce.learning.model.dto.UsuarioDTO;
+import com.devForce.learning.model.dto.request.RegistroDTO;
+import com.devForce.learning.model.entity.*;
 import com.devForce.learning.repository.LicenciaRepository;
+import com.devForce.learning.repository.RoleRepository;
 import com.devForce.learning.repository.SolicitudRepository;
 import com.devForce.learning.repository.UsuarioRepository;
+import com.devForce.learning.security.jwt.JwtUtils;
 import com.devForce.learning.service.AdminService;
+import com.devForce.learning.service.UsuarioService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Slf4j
@@ -30,30 +36,83 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     LicenciaRepository licenciaRepository;
 
+    @Autowired
+    RoleRepository roleRepository;
+
+    @Autowired
+    UsuarioService usuarioService;
+
+    @Autowired
+    PasswordEncoder encoder;
+
+    @Autowired
+    JwtUtils jwtUtils;
+
 
     /** Intenta crear un usuario a partir de un objeto usuario que viene del front
     @Param Usuario
      */
     @Override
-    public ResponseEntity<RespuestaDTO> crearUsuario(Usuario usuario) {
-        log.info("Intentando guardar usuario...");
-        //TODO: Chequear que soy un usuario Admin
-        Usuario usuarioYaExiste = usuarioRepository.findByNombreAndApellido(usuario.getNombre(), usuario.getApellido());
-        if(usuarioYaExiste==null) {
-            addUsuario(usuario);
-            log.info("Usuario creado");
-            return new ResponseEntity<>(
-                    new RespuestaDTO(
-                            true,
-                            "Usuario Creado", usuarioRepository.findByNombreAndApellido(usuario.getNombre(),
-                            usuario.getApellido())),
-                    HttpStatus.CREATED);
+    public ResponseEntity<RespuestaDTO> crearUsuario(RegistroDTO registroDTO) {
+        if (usuarioRepository.existsByUsername(registroDTO.getUsername())) {
+            return new ResponseEntity<>(new RespuestaDTO(false,"Usuario Ya Existe", null), HttpStatus.BAD_REQUEST);
         }
-        else {
-            log.info("Usuario no se ha podido crear - Duplicado");
-            return new ResponseEntity<>(new RespuestaDTO(false,"Usuario Ya Existe", null), HttpStatus.FORBIDDEN);
+
+        if (usuarioRepository.existsByEmail(registroDTO.getEmail())) {
+            return new ResponseEntity<>(new RespuestaDTO(false,"Email ya se encuentra en uso", null), HttpStatus.BAD_REQUEST);
         }
+
+        // Create new user's account
+        Usuario user = new Usuario(
+                registroDTO.getNombre(),
+                registroDTO.getApellido(),
+                registroDTO.getUsername(),
+                registroDTO.getEmail(),
+                encoder.encode(registroDTO.getPassword()),
+                registroDTO.getPhone(),
+                registroDTO.getHasTeams(),
+                registroDTO.getMentorArea());
+
+        Set<String> strRoles = registroDTO.getRole();
+        Set<Role> roles = new HashSet<>();
+
+        if (strRoles == null) {
+            Role userRole = roleRepository.findByName(ERole.ROLE_USUARIO)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(userRole);
+        } else {
+            strRoles.forEach(role -> {
+                switch (role) {
+                    case "admin":
+                        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(adminRole);
+
+                        break;
+                    case "mod":
+                        Role modRole = roleRepository.findByName(ERole.ROLE_MENTOR)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(modRole);
+
+                        break;
+                    default:
+                        Role userRole = roleRepository.findByName(ERole.ROLE_USUARIO)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(userRole);
+                }
+            });
+        }
+
+        user.setRoles(roles);
+        usuarioRepository.save(user);
+        UsuarioDTO contenido = usuarioService.crearUsuarioDTO(usuarioRepository.findByUsername(user.getUsername()).orElse(null));
+        if (contenido == null){
+            return new ResponseEntity<>(new RespuestaDTO(false,"Usuario no se registró correctamente", null), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(new RespuestaDTO(true,"Usuario creado!",contenido),HttpStatus.OK);
     }
+
 
 
     /** Crea un Usuario nuevo en la base a partir de un objeto usuario
@@ -69,7 +128,8 @@ public class AdminServiceImpl implements AdminService {
                 usuario.getPassword(),
                 usuario.getPhone(),
                 //usuario.getRol(),
-                usuario.getHasTeams()
+                usuario.getHasTeams(),
+                usuario.getMentorArea()
         );
         usuarioRepository.save(newUsuario);
     }

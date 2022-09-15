@@ -3,7 +3,7 @@ package com.devForce.learning.model.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "roles")
+@Table(name = "rol")
 public class Role {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

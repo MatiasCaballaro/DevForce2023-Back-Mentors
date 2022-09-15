@@ -1,7 +1,9 @@
 package com.devForce.learning.controller;
 
+import com.devForce.learning.model.dto.RespuestaDTO;
+import com.devForce.learning.model.dto.UsuarioDTO;
 import com.devForce.learning.model.dto.request.LoginRequest;
-import com.devForce.learning.model.dto.request.SignupRequest;
+import com.devForce.learning.model.dto.request.RegistroDTO;
 import com.devForce.learning.model.dto.response.MessageResponse;
 import com.devForce.learning.model.dto.response.UserInfoResponse;
 import com.devForce.learning.model.entity.ERole;
@@ -11,8 +13,11 @@ import com.devForce.learning.repository.RoleRepository;
 import com.devForce.learning.repository.UsuarioRepository;
 import com.devForce.learning.security.jwt.JwtUtils;
 import com.devForce.learning.security.services.UserDetailsImpl;
+import com.devForce.learning.service.AdminService;
+import com.devForce.learning.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -36,10 +41,17 @@ public class AuthController {
   AuthenticationManager authenticationManager;
 
   @Autowired
-  UsuarioRepository userRepository;
+  UsuarioRepository usuarioRepository;
 
   @Autowired
   RoleRepository roleRepository;
+
+  @Autowired
+  AdminService adminService;
+
+  @Autowired
+  UsuarioService usuarioService;
+
 
   @Autowired
   PasswordEncoder encoder;
@@ -70,118 +82,15 @@ public class AuthController {
                                    roles));
   }
 
-  /*@PostMapping("/signup")
-  public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-    if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-      return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
-    }
-
-    if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-      return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
-    }
-
-    // Create new user's account
-    Usuario user = new Usuario(signUpRequest.getUsername(),
-                         signUpRequest.getEmail(),
-                         encoder.encode(signUpRequest.getPassword()));
-
-    Set<String> strRoles = signUpRequest.getRole();
-    Set<Role> roles = new HashSet<>();
-
-    if (strRoles == null) {
-      Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-          .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-      roles.add(userRole);
-    } else {
-      strRoles.forEach(role -> {
-        switch (role) {
-        case "admin":
-          Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(adminRole);
-
-          break;
-        case "mod":
-          Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(modRole);
-
-          break;
-        default:
-          Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(userRole);
-        }
-      });
-    }
-
-    user.setRoles(roles);
-    userRepository.save(user);
-
-    return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
-  }*/
-
   @PostMapping("/signup")
-  public ResponseEntity<?> registerUser(@Valid @RequestBody Usuario usuario) {
-    if (userRepository.existsByUsername(usuario.getUsername())) {
-      return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
-    }
-
-    if (userRepository.existsByEmail(usuario.getEmail())) {
-      return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
-    }
-
-    // Create new user's account
-    Usuario newUser = new Usuario(
-            usuario.getNombre(),
-            usuario.getApellido(),
-            usuario.getUsername(),
-            usuario.getEmail(),
-            encoder.encode(usuario.getPassword()),
-            usuario.getPhone(),
-            usuario.getHasTeams()
-          );
-
-    Set<Role> strRoles = usuario.getRoles();
-    Set<Role> roles = new HashSet<>();
-
-    if (strRoles == null) {
-      Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-          .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-      roles.add(userRole);
-    } else {
-      strRoles.forEach(role -> {
-        switch (role.getName().toString()) {
-        case "admin":
-          Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(adminRole);
-
-          break;
-        case "mod":
-          Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(modRole);
-
-          break;
-        default:
-          Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(userRole);
-        }
-      });
-    }
-
-    newUser.setRoles(roles);
-    userRepository.save(newUser);
-
-    return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+  public ResponseEntity<RespuestaDTO> registerUser(@Valid @RequestBody RegistroDTO registroDTO) {
+    return adminService.crearUsuario(registroDTO);
   }
 
   @PostMapping("/signout")
   public ResponseEntity<?> logoutUser() {
     ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
     return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())
-        .body(new MessageResponse("You've been signed out!"));
+        .body(new MessageResponse("Usuario deslogueado"));
   }
 }

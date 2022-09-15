@@ -21,10 +21,10 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "name", length = 50 )
+    @Column(name = "name", length = 50, nullable = false)
     private String nombre;
 
-    @Column(name = "lastname", length = 50)
+    @Column(name = "lastname", length = 50, nullable = false)
     private String apellido;
 
     @Column(name = "username", length = 50, nullable = false)
@@ -64,13 +64,7 @@ public class Usuario {
 
 
 //Constructor
-    public Usuario(String username, String email, String password) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-    }
-
-    public Usuario(String nombre, String apellido, String username, String email, String password, String phone, Boolean hasTeams) {
+   public Usuario(String nombre, String apellido, String username, String email, String password, String phone, Boolean hasTeams, String mentorArea) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.username = username;
@@ -78,9 +72,10 @@ public class Usuario {
         this.password = password;
         this.phone = phone;
         this.hasTeams = hasTeams;
+        this.mentorArea = mentorArea;
     }
 
-    public Usuario(String nombre, String apellido, String username, String email, String password, String phone, Boolean hasTeams, Set<Role> roles) {
+   public Usuario(String nombre, String apellido, String username, String email, String password, String phone, Boolean hasTeams, Set<Role> roles) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.username = username;
