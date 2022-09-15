@@ -3,15 +3,16 @@ package com.devForce.learning.service.impl;
 import com.devForce.learning.model.dto.RespuestaDTO;
 import com.devForce.learning.model.dto.SolicitudDTO;
 import com.devForce.learning.model.dto.UsuarioDTO;
+import com.devForce.learning.model.entity.Solicitud;
 import com.devForce.learning.model.entity.Usuario;
 import com.devForce.learning.repository.UsuarioRepository;
-import com.devForce.learning.service.SolicitudService;
 import com.devForce.learning.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,9 +21,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Autowired
     UsuarioRepository usuarioRepository;
-
-    @Autowired
-    SolicitudService solicitudService;
 
 
 
@@ -64,13 +62,13 @@ public class UsuarioServiceImpl implements UsuarioService {
         dto.setPhone(usuario.getPhone());
         dto.setRol(usuario.getRol());
         dto.setHasTeams(usuario.getHasTeams());
-
-        // TODO: NO PUDE HACERLO
-
+        /*
         dto.setSolicitudes(
                 usuario.getSolicitudes()
-                .stream()
-                .map(SolicitudDTO));
+                        .stream()
+                        .map(s -> solicitudService.crearSolicitudDTO(s))
+                        .collect(Collectors.toList()));
+        */
 
         return dto;
     }
@@ -88,6 +86,4 @@ public class UsuarioServiceImpl implements UsuarioService {
         respuestaDTO.setContenido(null);
         return new ResponseEntity<>(respuestaDTO, HttpStatus.BAD_REQUEST);
     }
-
-
 }

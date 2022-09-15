@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 
 public interface SolicitudService {
 
-    public ResponseEntity<?> crearSolicitud(Usuario usuario, Solicitud solicitud);
+    public ResponseEntity<?> crearSolicitud(Solicitud solicitud);
 
     public ResponseEntity<?> devolverSolicitudesUsuario(Usuario usuario);
 

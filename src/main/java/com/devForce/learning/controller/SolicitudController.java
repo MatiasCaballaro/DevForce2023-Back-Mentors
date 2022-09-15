@@ -26,6 +26,7 @@ public class SolicitudController {
     @Autowired
     SolicitudService solicitudService;
 
+    // TODO: Solicitudes para Mentor
     @GetMapping("/solicitudes")
     public List<Solicitud> allSolicitudes() {
         return new ArrayList<>(solicitudRepository.findAll());
@@ -40,9 +41,9 @@ public class SolicitudController {
 
     //TODO: No se hizo este método
     @PostMapping("/nuevaSolicitud")
-    public ResponseEntity<String> nuevaSolicitud (@RequestBody Solicitud solicitud, Usuario usuario){
+    public ResponseEntity<?> nuevaSolicitud (@RequestBody Solicitud solicitud){
         //TODO: Hacer la nuevaSolicitud. Tiene que validar que el usuario sea el logueado, y armar una nueva solicitud en estado "PENDIENTE-MENTOR"
-        return new ResponseEntity<String>("Solicitud creada",HttpStatus.CREATED);
+        return solicitudService.crearSolicitud(solicitud);
     }
 
 }

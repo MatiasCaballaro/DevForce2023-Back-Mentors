@@ -17,7 +17,7 @@ public class UsuarioDTO {
     private String nombre, apellido, username, mail, phone, rol;
 
     //TODO: ES solicitudDTO?
-    private List<SolicitudDTO> solicitudes;
+    //private List<SolicitudDTO> solicitudes;
 
     private boolean hasTeams;
 

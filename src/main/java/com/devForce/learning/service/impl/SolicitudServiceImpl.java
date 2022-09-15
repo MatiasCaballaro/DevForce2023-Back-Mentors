@@ -29,17 +29,20 @@ public class SolicitudServiceImpl implements SolicitudService {
 
     //TODO: Terminar metodo. Crear la solicitud.
     @Override
-    public ResponseEntity<?> crearSolicitud(Usuario usuario, Solicitud solicitud) {
-        if ( usuario.getRol().equals("USUARIO") || usuario.getRol().equals("MENTOR") ){
-
-
-
-
-            return new ResponseEntity<SolicitudDTO>(new SolicitudDTO(), HttpStatus.CREATED);
+    public ResponseEntity<?> crearSolicitud(Solicitud solicitud) {
+        Usuario usuario = solicitud.getUsuario();
+        // TODO: Chequear que sea el logueado
+        RespuestaDTO respuestaDTO = new RespuestaDTO();
+        if (!usuario.getRol().equals("MENTOR") && !usuario.getRol().equals("USER")){
+            respuestaDTO.setOk(false);
+            respuestaDTO.setMensaje("No OK");
+            return new ResponseEntity<>(respuestaDTO, HttpStatus.FORBIDDEN);
         }
-        else {
-            return new ResponseEntity<SolicitudDTO>(new SolicitudDTO(), HttpStatus.FORBIDDEN);
-        }
+        solicitud.setEstado("PENDIENTE-MENTOR");
+        solicitudRepository.save(solicitud);
+        respuestaDTO.setOk(true);
+        respuestaDTO.setMensaje("OK");
+        return new ResponseEntity<>(respuestaDTO, HttpStatus.OK);
     }
 
     @Override
