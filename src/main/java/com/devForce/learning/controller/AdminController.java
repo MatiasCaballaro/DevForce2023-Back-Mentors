@@ -10,6 +10,7 @@ import com.devForce.learning.repository.LicenciaRepository;
 import com.devForce.learning.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -33,8 +34,8 @@ public class AdminController {
     }
 
     @PostMapping("/asignarLicencia")
-    public ResponseEntity<?> licenciaAsignadaAUsuario(@RequestBody Solicitud solicitud) throws Exception {
-        return adminservice.asignarLicencia(solicitud);
+    public ResponseEntity<?> licenciaAsignadaAUsuario(@RequestBody Solicitud solicitud, Authentication authentication) throws Exception {
+        return adminservice.asignarLicencia(solicitud, authentication);
     }
 
     @GetMapping("/licencias")

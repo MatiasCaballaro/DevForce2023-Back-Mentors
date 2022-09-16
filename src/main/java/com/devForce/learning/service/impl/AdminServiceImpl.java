@@ -9,12 +9,14 @@ import com.devForce.learning.repository.RoleRepository;
 import com.devForce.learning.repository.SolicitudRepository;
 import com.devForce.learning.repository.UsuarioRepository;
 import com.devForce.learning.security.jwt.JwtUtils;
+import com.devForce.learning.security.services.UserDetailsImpl;
 import com.devForce.learning.service.AdminService;
 import com.devForce.learning.service.UsuarioService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -147,7 +149,7 @@ public class AdminServiceImpl implements AdminService {
      */
     //TODO: Terminar asignarLicenciaMétodo (VERIFICAR que el usuario logueado sea admin)
     @Override
-    public ResponseEntity<?> asignarLicencia(Solicitud solicitud) {
+    public ResponseEntity<?> asignarLicencia(Solicitud solicitud, Authentication authentication) {
 
         // AGREGO ESTO PARA TESTING SOLAMENTE, DESPUES BORRAR
         solicitud.setEstado("PENDIENTE-ADMIN");
@@ -162,10 +164,10 @@ public class AdminServiceImpl implements AdminService {
         List<Solicitud> solicitudesAceptadas = solicitudRepository.findByUsuarioAndTipoAndEstado(solicitud.getUsuario(), solicitud.getTipo(), "ACEPTADA");
             for (Solicitud solicitudAux : solicitudesAceptadas){
                 if (!solicitudAux.getLicencia().getVencimiento().isBefore(LocalDate.now())) {
-                    return darLicencia(solicitud,solicitudAux);
+                    return darLicencia(solicitud,solicitudAux, authentication);
                 }
             }
-        return darLicencia(solicitud,null);
+        return darLicencia(solicitud,null, authentication);
     }
 
     /**Asigna una licencia a una solicitud
@@ -173,7 +175,9 @@ public class AdminServiceImpl implements AdminService {
      @Param Solicitud solicitud
      @Param Solicitud solicitudAux
      */
-    private ResponseEntity<?> darLicencia (Solicitud solicitud, Solicitud solicitudAux){
+    private ResponseEntity<?> darLicencia (Solicitud solicitud, Solicitud solicitudAux, Authentication authentication){
+
+        UserDetailsImpl adminlogueado = (UserDetailsImpl) authentication;
 
         Licencia licencia;
         HttpStatus httpStatus = HttpStatus.CREATED;
@@ -191,6 +195,7 @@ public class AdminServiceImpl implements AdminService {
 
         solicitud.setLicencia(licencia);
         solicitud.setEstado("ACEPTADA");
+        solicitud.setApruebaAdminID(adminlogueado.getId().intValue());
         solicitudRepository.save(solicitud);
         licencia.setEstado("ASIGNADA");
         asignarTiempo(solicitud);
