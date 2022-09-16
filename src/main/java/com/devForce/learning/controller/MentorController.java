@@ -27,11 +27,10 @@ public class MentorController {
         return mentorService.rechazarSolicitud(solicitud);
     }
 
+    //TODO hacer método para que el mentor pase la solicitud a "DEVUELTO-USER"
+    // Tiene que devolver una respuesta DTO
     @PutMapping("/devolverSolicitudPlataforma")
     public ResponseEntity<?> devolverSolicitudPlataforma(@RequestBody Solicitud solicitud) throws Exception {
         return mentorService.devolverSolicitud(solicitud);
     }
-
-    //TODO hacer método para que el mentor pase la solicitud a "DEVUELTO-USER"
-    // Tiene que devolver una respuesta DTO
 }

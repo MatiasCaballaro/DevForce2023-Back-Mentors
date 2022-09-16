@@ -36,7 +36,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
 
         updateUser.setPhone(usuario.getPhone());
-        updateUser.setMail(usuario.getMail());
+        updateUser.setEmail(usuario.getEmail());
         updateUser.setHasTeams(usuario.getHasTeams());
         updateUser.setPassword(usuario.getPassword());
 
@@ -58,9 +58,8 @@ public class UsuarioServiceImpl implements UsuarioService {
         dto.setNombre(usuario.getNombre());
         dto.setApellido(usuario.getApellido());
         dto.setUsername(usuario.getUsername());
-        dto.setMail(usuario.getMail());
+        dto.setMail(usuario.getEmail());
         dto.setPhone(usuario.getPhone());
-        dto.setRol(usuario.getRol());
         dto.setHasTeams(usuario.getHasTeams());
         /*
         dto.setSolicitudes(

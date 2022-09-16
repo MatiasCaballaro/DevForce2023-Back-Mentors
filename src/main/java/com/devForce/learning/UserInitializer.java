@@ -1,10 +1,9 @@
 package com.devForce.learning;
 
 import com.devForce.learning.model.dto.UsuarioDTO;
-import com.devForce.learning.model.entity.Licencia;
-import com.devForce.learning.model.entity.Solicitud;
-import com.devForce.learning.model.entity.Usuario;
+import com.devForce.learning.model.entity.*;
 import com.devForce.learning.repository.LicenciaRepository;
+import com.devForce.learning.repository.RoleRepository;
 import com.devForce.learning.repository.SolicitudRepository;
 import com.devForce.learning.repository.UsuarioRepository;
 import com.devForce.learning.service.UsuarioService;
@@ -13,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -37,10 +37,34 @@ public class UserInitializer implements CommandLineRunner {
     @Autowired
     private UsuarioService usuarioService;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    PasswordEncoder encoder;
+
     @Override
     public void run(String[] args) throws Exception {
 
         if(datosDePrueba){
+            Role userRole = new Role(ERole.ROLE_USUARIO);
+            Role mentorRole = new Role(ERole.ROLE_MENTOR);
+            Role adminRole = new Role(ERole.ROLE_ADMIN);
+            roleRepository.save(userRole);
+            roleRepository.save(mentorRole);
+            roleRepository.save(adminRole);
+
+            Set<Role> userRoles = new HashSet();
+            Role r = roleRepository.findByName(ERole.ROLE_USUARIO).orElse(null);
+            userRoles.add(r);
+
+            Set<Role> mentorRoles = new HashSet();
+            Role m = roleRepository.findByName(ERole.ROLE_MENTOR).orElse(null);
+            mentorRoles.add(m);
+
+            Set<Role> adminRoles = new HashSet();
+            Role a = roleRepository.findByName(ERole.ROLE_ADMIN).orElse(null);
+            adminRoles.add(a);
 
             log.info("Starting to initialize sample data...");
             Faker faker = new Faker();
@@ -55,11 +79,11 @@ public class UserInitializer implements CommandLineRunner {
                 user.setNombre(faker.name().firstName());
                 user.setApellido(faker.name().lastName());
                 user.setUsername(user.getNombre()+user.getApellido());
-                user.setMail(user.getNombre()+"."+user.getApellido()+"@gire.com");
-                user.setPassword(user.getNombre()+"123");
+                user.setEmail(user.getNombre()+"."+user.getApellido()+"@gire.com");
+                user.setPassword(encoder.encode(user.getNombre()+"123"));
                 user.setPhone(faker.phoneNumber().cellPhone());
-                user.setRol("Usuario");
                 user.setHasTeams(faker.random().nextBoolean());
+                user.setRoles(userRoles);
                 System.out.println(user.toString());
 
                 usuarioRepository.save(user);
@@ -71,11 +95,11 @@ public class UserInitializer implements CommandLineRunner {
             adminUser.setNombre("Adrian");
             adminUser.setApellido("Pierro");
             adminUser.setUsername("AdrianPierro");
-            adminUser.setMail((adminUser.getNombre()+"."+adminUser.getApellido()+"@gire.com").toLowerCase());
-            adminUser.setPassword(adminUser.getNombre()+"123");
+            adminUser.setEmail((adminUser.getNombre()+"."+adminUser.getApellido()+"@gire.com").toLowerCase());
+            adminUser.setPassword(encoder.encode(adminUser.getNombre()+"123"));
             adminUser.setPhone("123456789");
-            adminUser.setRol("Admin");
             adminUser.setHasTeams(true);
+            adminUser.setRoles(adminRoles);
             System.out.println(adminUser.toString());
             usuarioRepository.save(adminUser);
 
@@ -85,11 +109,12 @@ public class UserInitializer implements CommandLineRunner {
             mentorUser.setNombre("Javier");
             mentorUser.setApellido("Ottina");
             mentorUser.setUsername("JavierOttina");
-            mentorUser.setMail((mentorUser.getNombre()+"."+mentorUser.getApellido()+"@gire.com").toLowerCase());
-            mentorUser.setPassword(mentorUser.getNombre()+"123");
+            mentorUser.setEmail((mentorUser.getNombre()+"."+mentorUser.getApellido()+"@gire.com").toLowerCase());
+            mentorUser.setPassword(encoder.encode(mentorUser.getNombre()+"123"));
             mentorUser.setPhone("123456789");
-            mentorUser.setRol("Mentor");
             mentorUser.setHasTeams(true);
+            mentorUser.setRoles(mentorRoles);
+            mentorUser.setMentorArea("Backend");
             System.out.println(mentorUser.toString());
             usuarioRepository.save(mentorUser);
 

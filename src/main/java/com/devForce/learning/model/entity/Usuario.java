@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -26,12 +27,11 @@ public class Usuario {
     @Column(name = "lastname", length = 50, nullable = false)
     private String apellido;
 
-    //TODO es necesario el username? O trabajamos con el mail?
     @Column(name = "username", length = 50, nullable = false)
     private String username;
 
-    @Column(name = "mail", length = 100)
-    private String mail;
+    @Column(name = "email", length = 100)
+    private String email;
 
     @Column(name = "password", length = 255, nullable = false)
     private String password;
@@ -39,14 +39,18 @@ public class Usuario {
     @Column(name = "phone", length = 50)
     private String phone;
 
-    @Column(name = "rol", length = 25, nullable = false)
-    private String rol;
-
     @Column(name = "hasTeams")
     private Boolean hasTeams;
 
     @Column(name = "mentorArea", length = 25)
     private String mentorArea;
+
+    @ManyToMany(fetch=FetchType.EAGER)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
+
 
 
     //Relación con solicitud
@@ -60,15 +64,26 @@ public class Usuario {
 
 
 //Constructor
-    public Usuario(String nombre, String apellido, String username, String mail, String password, String phone, String rol, Boolean hasTeams) {
+   public Usuario(String nombre, String apellido, String username, String email, String password, String phone, Boolean hasTeams, String mentorArea) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.username = username;
-        this.mail = mail;
+        this.email = email;
         this.password = password;
         this.phone = phone;
-        this.rol = rol;
         this.hasTeams = hasTeams;
+        this.mentorArea = mentorArea;
+    }
+
+   public Usuario(String nombre, String apellido, String username, String email, String password, String phone, Boolean hasTeams, Set<Role> roles) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
+        this.hasTeams = hasTeams;
+        this.roles = roles;
     }
 
     @Override
@@ -78,10 +93,9 @@ public class Usuario {
                 ", nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +
                 //", username='" + username + '\'' +
-                //", mail='" + mail + '\'' +
+                //", email='" + email + '\'' +
                 //", password='" + password + '\'' +
                 //", phone='" + phone + '\'' +
-                ", rol='" + rol + '\'' +
                 //", hasTeams=" + hasTeams +
 //                ", solicitudes=" + solicitudes.stream().map(s -> s.getSolicitudId()).collect(Collectors.toList()) +
                 '}';

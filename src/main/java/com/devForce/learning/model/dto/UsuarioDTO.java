@@ -14,6 +14,7 @@ public class UsuarioDTO {
 
     private long id;
 
+    //TODO modificar rol a Set
     private String nombre, apellido, username, mail, phone, rol;
 
     //TODO: ES solicitudDTO?

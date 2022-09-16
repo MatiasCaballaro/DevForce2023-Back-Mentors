@@ -1,5 +1,8 @@
 package com.devForce.learning.controller;
 
+import com.devForce.learning.model.dto.RespuestaDTO;
+import com.devForce.learning.model.dto.request.LoginRequest;
+import com.devForce.learning.model.dto.request.RegistroDTO;
 import com.devForce.learning.model.entity.Licencia;
 import com.devForce.learning.model.entity.Solicitud;
 import com.devForce.learning.model.entity.Usuario;
@@ -7,7 +10,11 @@ import com.devForce.learning.repository.LicenciaRepository;
 import com.devForce.learning.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -21,14 +28,14 @@ public class AdminController {
     AdminService adminservice;
 
 
-    @PostMapping("/crearUsuario")
-    public ResponseEntity<?> nuevoUsuario(@RequestBody Usuario usuario) throws  Exception {
-        return adminservice.crearUsuario(usuario);
+    @PostMapping("/registrarUsuario")
+    public ResponseEntity<RespuestaDTO> authenticateUser(@Valid @RequestBody RegistroDTO registroDTO) {
+        return adminservice.crearUsuario(registroDTO);
     }
 
     @PostMapping("/asignarLicencia")
-    public ResponseEntity<?> licenciaAsignadaAUsuario(@RequestBody Solicitud solicitud) throws Exception {
-        return adminservice.asignarLicencia(solicitud);
+    public ResponseEntity<?> licenciaAsignadaAUsuario(@RequestBody Solicitud solicitud, Authentication authentication) throws Exception {
+        return adminservice.asignarLicencia(solicitud, authentication);
     }
 
     @GetMapping("/licencias")
