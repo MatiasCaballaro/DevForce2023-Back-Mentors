@@ -33,11 +33,11 @@ public class SolicitudServiceImpl implements SolicitudService {
         Usuario usuario = solicitud.getUsuario();
         // TODO: Chequear que sea el logueado
         RespuestaDTO respuestaDTO = new RespuestaDTO();
-        if (!usuario.getRol().equals("MENTOR") && !usuario.getRol().equals("USER")){
-            respuestaDTO.setOk(false);
-            respuestaDTO.setMensaje("No OK");
-            return new ResponseEntity<>(respuestaDTO, HttpStatus.FORBIDDEN);
-        }
+//        if (!usuario.getRol().equals("MENTOR") && !usuario.getRol().equals("USER")){
+//            respuestaDTO.setOk(false);
+//            respuestaDTO.setMensaje("No OK");
+//            return new ResponseEntity<>(respuestaDTO, HttpStatus.FORBIDDEN);
+//        }
         solicitud.setEstado("PENDIENTE-MENTOR");
         solicitudRepository.save(solicitud);
         respuestaDTO.setOk(true);
@@ -116,7 +116,7 @@ public class SolicitudServiceImpl implements SolicitudService {
 
     @Override
     public ResponseEntity<?> getSolicitudesByIdUsuario(Long idUsuario) {
-        Usuario usuario = usuarioRepository.findById(idUsuario).orElse(null);
+      /*  Usuario usuario = usuarioRepository.findById(idUsuario).orElse(null);
 
         usuario.setRol(usuario.getRol().toUpperCase());
 
@@ -127,7 +127,8 @@ public class SolicitudServiceImpl implements SolicitudService {
                 return devolverSolicitudesMentorAdmin(usuario);
         } else {
             return error("El usuario es nulo");
-        }
+        }*/
+        return error("El usuario es nulo");
     }
 
     @Override

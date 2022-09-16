@@ -36,7 +36,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
 
         updateUser.setPhone(usuario.getPhone());
-        updateUser.setMail(usuario.getMail());
+        updateUser.setEmail(usuario.getEmail());
         updateUser.setHasTeams(usuario.getHasTeams());
         updateUser.setPassword(usuario.getPassword());
 
