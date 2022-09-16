@@ -9,15 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class UsuarioSolicitudDTO {
-
-    private String nombre;
-
-    private String apellido;
-
-    private String correo;
-
-    private String tel;
-
+    private String nombre, apellido, correo, tel;
     private boolean tieneTeams;
 
 }

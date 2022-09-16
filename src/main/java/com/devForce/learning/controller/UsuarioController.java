@@ -1,5 +1,6 @@
 package com.devForce.learning.controller;
 
+import com.devForce.learning.model.dto.RespuestaDTO;
 import com.devForce.learning.model.dto.UsuarioDTO;
 import com.devForce.learning.model.entity.Solicitud;
 import com.devForce.learning.model.entity.Usuario;
@@ -48,6 +49,11 @@ public class UsuarioController {
     @GetMapping("/usuario/solicitudes")
     public List<Solicitud> getSolicitudesUsuario (@RequestBody Usuario usuario) throws Exception {
         return usuario.getSolicitudes();
+    }
+
+    @PutMapping("/usuario/configuracion")
+    public ResponseEntity<RespuestaDTO> updateDatos (@RequestBody Usuario usuario) throws Exception {
+        return usuarioService.updateDatos(usuario);
     }
 
 

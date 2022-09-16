@@ -1,13 +1,12 @@
 package com.devForce.learning.service.impl;
 
-import com.devForce.learning.model.dto.RespuestaDTO;
-import com.devForce.learning.model.dto.SolicitudMentorAdminDTO;
-import com.devForce.learning.model.dto.SolicitudUsuarioDTO;
-import com.devForce.learning.model.dto.UsuarioSolicitudDTO;
+import com.devForce.learning.model.dto.*;
 import com.devForce.learning.model.entity.Solicitud;
 import com.devForce.learning.model.entity.Usuario;
 import com.devForce.learning.repository.SolicitudRepository;
+import com.devForce.learning.repository.UsuarioRepository;
 import com.devForce.learning.service.SolicitudService;
+import com.devForce.learning.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,15 +21,28 @@ public class SolicitudServiceImpl implements SolicitudService {
     @Autowired
     SolicitudRepository solicitudRepository;
 
+    @Autowired
+    UsuarioRepository usuarioRepository;
+
+    @Autowired
+    UsuarioService usuarioService;
+
+    //TODO: Terminar metodo. Crear la solicitud.
     @Override
-    public ResponseEntity<String> crearSolicitud(Usuario usuario, Solicitud solicitud) {
-        /*if (usuario.getRol()=="Usuario"||usuario.getRol()=="Mentor"){
-            return new ResponseEntity<String>("Solicitud creada", HttpStatus.CREATED);
+    public ResponseEntity<?> crearSolicitud(Solicitud solicitud) {
+        Usuario usuario = solicitud.getUsuario();
+        // TODO: Chequear que sea el logueado
+        RespuestaDTO respuestaDTO = new RespuestaDTO();
+        if (!usuario.getRol().equals("MENTOR") && !usuario.getRol().equals("USER")){
+            respuestaDTO.setOk(false);
+            respuestaDTO.setMensaje("No OK");
+            return new ResponseEntity<>(respuestaDTO, HttpStatus.FORBIDDEN);
         }
-        else {
-            return new ResponseEntity<String>("No tienes permisos crack", HttpStatus.FORBIDDEN);
-        }*/
-        return new ResponseEntity<String>("No tienes permisos crack", HttpStatus.FORBIDDEN);
+        solicitud.setEstado("PENDIENTE-MENTOR");
+        solicitudRepository.save(solicitud);
+        respuestaDTO.setOk(true);
+        respuestaDTO.setMensaje("OK");
+        return new ResponseEntity<>(respuestaDTO, HttpStatus.OK);
     }
 
     @Override
@@ -85,6 +97,57 @@ public class SolicitudServiceImpl implements SolicitudService {
     }
 
     @Override
+    public ResponseEntity<?> getTiposDeSolicitud() {
+        RespuestaDTO respuestaDTO = new RespuestaDTO();
+        respuestaDTO.setOk(true);
+        respuestaDTO.setMensaje("");
+        // TODO: Preguntar dónde estarían estos datos
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<?> getAreasDeSolicitud() {
+        RespuestaDTO respuestaDTO = new RespuestaDTO();
+        respuestaDTO.setOk(true);
+        respuestaDTO.setMensaje("");
+        // TODO: Preguntar dónde estarían estos datos
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<?> getSolicitudesByIdUsuario(Long idUsuario) {
+        Usuario usuario = usuarioRepository.findById(idUsuario).orElse(null);
+
+        usuario.setRol(usuario.getRol().toUpperCase());
+
+        if(usuario != null) {
+            if (usuario.getRol().equals("USUARIO"))
+                return devolverSolicitudesUsuario(usuario);
+            else
+                return devolverSolicitudesMentorAdmin(usuario);
+        } else {
+            return error("El usuario es nulo");
+        }
+    }
+
+    @Override
+    public SolicitudDTO crearSolicitudDTO(Solicitud solicitud) {
+
+        SolicitudDTO dto = new SolicitudDTO();
+        dto.setId(solicitud.getId());
+        dto.setDescripcion(solicitud.getDescripcion());
+        dto.setEstado(solicitud.getEstado());
+        dto.setTipo(solicitud.getTipo());
+        dto.setApruebaAdminID(solicitud.getApruebaAdminID());
+        dto.setApruebaMentorID(solicitud.getApruebaMentorID());
+        dto.setTiempoSolicitado(solicitud.getTiempoSolicitado());
+        dto.setUsuario(usuarioService.crearUsuarioDTO(solicitud.getUsuario()));
+
+
+        return dto;
+    }
+
+    @Override
     public ResponseEntity<?> error(String mensaje) {
         RespuestaDTO respuestaDTO = new RespuestaDTO();
         respuestaDTO.setOk(false);
@@ -92,4 +155,7 @@ public class SolicitudServiceImpl implements SolicitudService {
         respuestaDTO.setContenido(null);
         return new ResponseEntity<>(respuestaDTO, HttpStatus.BAD_REQUEST);
     }
+
+
+
 }

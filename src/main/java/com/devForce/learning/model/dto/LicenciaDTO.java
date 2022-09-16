@@ -3,6 +3,7 @@ package com.devForce.learning.model.dto;
 import com.devForce.learning.model.entity.Solicitud;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -10,15 +11,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class UsuarioDTO {
+public class LicenciaDTO {
 
     private long id;
 
-    private String nombre, apellido, username, mail, phone, rol;
+    private String serie, estado, plataforma;
 
-    //TODO: ES solicitudDTO?
-    //private List<SolicitudDTO> solicitudes;
+    private LocalDateTime vencimiento;
 
-    private boolean hasTeams;
+    private List<SolicitudDTO> solicitudes;
 
 }

@@ -22,6 +22,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Locale;
 
 @Service
 @Slf4j
@@ -153,12 +154,12 @@ public class AdminServiceImpl implements AdminService {
         System.out.println("El usuario de la solicitud es: " + solicitud.getUsuario());
         //
 
-        if(solicitud.getEstado()!="PENDIENTE-ADMIN"){
+        if(!solicitud.getEstado().equals("PENDIENTE-ADMIN")){
             return new ResponseEntity<>(new RespuestaDTO(false,"Estado de solicitud incorrecto", null), HttpStatus.FORBIDDEN);
         }
         // Se buscan solicitudes aceptadas del mismo tipo de solicitud
         // verificar que la licencia no esté vencida. Si ya tiene una licencia activa, se extiende el tiempo de la misma
-        List<Solicitud> solicitudesAceptadas = solicitudRepository.findByUsuarioAndTipoAndEstado(solicitud.getUsuario(), "Udemy", "ACEPTADA");
+        List<Solicitud> solicitudesAceptadas = solicitudRepository.findByUsuarioAndTipoAndEstado(solicitud.getUsuario(), solicitud.getTipo(), "ACEPTADA");
             for (Solicitud solicitudAux : solicitudesAceptadas){
                 if (!solicitudAux.getLicencia().getVencimiento().isBefore(LocalDate.now())) {
                     return darLicencia(solicitud,solicitudAux);
@@ -217,6 +218,10 @@ public class AdminServiceImpl implements AdminService {
         else{
             licenciaActual.setVencimiento(licenciaActual.getVencimiento().plusDays(solicitud.getTiempoSolicitado()));
         }
+    }
+
+    public List<Licencia> getLicencias (){
+        return licenciaRepository.findAll();
     }
 
 }
