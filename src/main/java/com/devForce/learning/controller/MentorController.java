@@ -13,9 +13,8 @@ public class MentorController {
     @Autowired
     MentorService mentorService;
 
-    //TODO hacer método para que el mentor pase la solicitud a "PENDIENTE MENTOR"
-    // (tiene que pasar un int para los días, el cual tambien puede ser 0)
-    // Tiene que devolver una respuesta DTO
+    //TODO probar método para que el mentor pase la solicitud a "PENDIENTE MENTOR"
+    //TODO PreAuthorize("MENTOR")
 
     @PutMapping("/aceptarSolicitud")
     public ResponseEntity<?> aceptarSolicitud(@RequestBody Solicitud solicitud, @RequestParam(required = false) Integer dias) throws Exception {
@@ -27,8 +26,7 @@ public class MentorController {
         return mentorService.rechazarSolicitud(solicitud);
     }
 
-    //TODO hacer método para que el mentor pase la solicitud a "DEVUELTO-USER"
-    // Tiene que devolver una respuesta DTO
+    //TODO probar método para que el mentor pase la solicitud a "DEVUELTO-USER"
     @PutMapping("/devolverSolicitudPlataforma")
     public ResponseEntity<?> devolverSolicitudPlataforma(@RequestBody Solicitud solicitud) throws Exception {
         return mentorService.devolverSolicitud(solicitud);

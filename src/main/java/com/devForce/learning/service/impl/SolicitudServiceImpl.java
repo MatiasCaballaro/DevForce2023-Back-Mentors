@@ -27,11 +27,9 @@ public class SolicitudServiceImpl implements SolicitudService {
     @Autowired
     UsuarioService usuarioService;
 
-    //TODO: Terminar metodo. Crear la solicitud.
     @Override
     public ResponseEntity<?> crearSolicitud(Solicitud solicitud) {
         Usuario usuario = solicitud.getUsuario();
-        // TODO: Chequear que sea el logueado
         RespuestaDTO respuestaDTO = new RespuestaDTO();
 //        if (!usuario.getRol().equals("MENTOR") && !usuario.getRol().equals("USER")){
 //            respuestaDTO.setOk(false);
@@ -96,12 +94,13 @@ public class SolicitudServiceImpl implements SolicitudService {
         return new ResponseEntity<>(respuestaDTO, HttpStatus.OK);
     }
 
+    // TODO: Terminar getTiposDeSolicitud() y getAreasDeSolicitud
     @Override
     public ResponseEntity<?> getTiposDeSolicitud() {
         RespuestaDTO respuestaDTO = new RespuestaDTO();
         respuestaDTO.setOk(true);
         respuestaDTO.setMensaje("");
-        // TODO: Preguntar dónde estarían estos datos
+
         return null;
     }
 
@@ -110,7 +109,7 @@ public class SolicitudServiceImpl implements SolicitudService {
         RespuestaDTO respuestaDTO = new RespuestaDTO();
         respuestaDTO.setOk(true);
         respuestaDTO.setMensaje("");
-        // TODO: Preguntar dónde estarían estos datos
+
         return null;
     }
 

@@ -17,7 +17,6 @@ public class UsuarioDTO {
     //TODO modificar rol a Set
     private String nombre, apellido, username, mail, phone, rol;
 
-    //TODO: ES solicitudDTO?
     //private List<SolicitudDTO> solicitudes;
 
     private boolean hasTeams;

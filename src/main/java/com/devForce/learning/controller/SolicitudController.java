@@ -27,22 +27,21 @@ public class SolicitudController {
     SolicitudService solicitudService;
 
     // TODO: Solicitudes para Mentor
+    // TODO: Solicitudes para Admin
+    // TODO: Agregar PreAuthorize
     @GetMapping("/solicitudes")
     public List<Solicitud> allSolicitudes() {
         return new ArrayList<>(solicitudRepository.findAll());
     }
 
-    // TODO Hacer un método para esta lógica en Solicitud Service y que este nuevo método llame a los otros dos
-    // Es necesario que las devoluciones de búsqueda pasen por la respuestaDTO??
     @GetMapping("/solicitudesFiltradas")
     public ResponseEntity<?> userSolicitudes(@RequestParam Long idUsuario) {
         return solicitudService.getSolicitudesByIdUsuario(idUsuario);
     }
 
-    //TODO: No se hizo este método
+
     @PostMapping("/nuevaSolicitud")
     public ResponseEntity<?> nuevaSolicitud (@RequestBody Solicitud solicitud){
-        //TODO: Hacer la nuevaSolicitud. Tiene que validar que el usuario sea el logueado, y armar una nueva solicitud en estado "PENDIENTE-MENTOR"
         return solicitudService.crearSolicitud(solicitud);
     }
 

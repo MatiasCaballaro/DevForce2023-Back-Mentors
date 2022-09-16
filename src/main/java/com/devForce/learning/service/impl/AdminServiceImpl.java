@@ -147,7 +147,7 @@ public class AdminServiceImpl implements AdminService {
      * de la licencia que ya tiene asignada
      @Param Solicitud
      */
-    //TODO: Terminar asignarLicenciaMétodo (VERIFICAR que el usuario logueado sea admin)
+    //TODO: Probar asignarLicenciaMétodo (con Authentication)
     @Override
     public ResponseEntity<?> asignarLicencia(Solicitud solicitud, Authentication authentication) {
 

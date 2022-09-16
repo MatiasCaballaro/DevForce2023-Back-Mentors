@@ -28,6 +28,7 @@ public class MentorServiceImpl implements MentorService {
     MentorRepository mentorRepository;
 
     public ResponseEntity<?> aceptarSolicitud (Solicitud solicitud, Integer dias) {
+        // TODO: Cada vez que el mentor aprueba una solicitud setear el apruebaMentorID
         if (dias == null)
             return aceptarSolicitudSimple(solicitud);
         else

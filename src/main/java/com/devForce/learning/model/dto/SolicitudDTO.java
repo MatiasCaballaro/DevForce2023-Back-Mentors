@@ -10,8 +10,6 @@ import lombok.*;
 @ToString
 public class SolicitudDTO {
 
-    //TODO: CHEQUEAR RECURSIVIDAD, capaz no es necesario mostrar el usuario o la licencia
-
     private long id;
 
     private String tipo, descripcion, estado, area;
