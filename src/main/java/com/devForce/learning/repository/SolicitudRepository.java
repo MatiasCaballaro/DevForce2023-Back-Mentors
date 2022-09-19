@@ -11,8 +11,9 @@ public interface SolicitudRepository extends JpaRepository<Solicitud,Long> {
 
     Solicitud findById (long Id);
 
-    //List<Solicitud> findByIdUsuario (long IdUsuario);
-    List<Solicitud> findByUsuarioAndEstado (Usuario usuario,String estado);
+    List<Solicitud> findByUsuario (Usuario usuario);
+
+    List<Solicitud> findByUsuarioNot (Usuario usuario);
 
     List<Solicitud> findByUsuarioAndTipoAndEstado (Usuario usuario, String tipo, String estado);
 

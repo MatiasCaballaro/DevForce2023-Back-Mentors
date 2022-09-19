@@ -25,17 +25,17 @@ public class Solicitud {
     @Column(name = "descripcion", length = 500, nullable = false)
     private String descripcion;
 
-    @Column(name = "apruebaMentorID")
-    private int apruebaMentorID;
-
-    @Column(name = "apruebaAdminID")
-    private int apruebaAdminID;
-
     @Column(name = "estado", length = 25, nullable = false)
     private String estado;
 
     @Column(name = "area", length = 50)
     private String area;
+
+    @Column(name = "apruebaMentorID")
+    private int apruebaMentorID;
+
+    @Column(name = "apruebaAdminID")
+    private int apruebaAdminID;
 
     @Column(name = "tiempoSolicitado", length = 25)
     private int tiempoSolicitado;
@@ -51,6 +51,15 @@ public class Solicitud {
     @JoinColumn(name="licencia_id")
     private Licencia licencia;
 
+    public Solicitud(String tipo, String descripcion, String area, Usuario usuario) {
+        this.tipo = tipo;
+        this.descripcion = descripcion;
+        this.area = area;
+        this.usuario = usuario;
+    }
+
+
+    /*
     //@JsonIgnore
     public Usuario getUsuario() {
         return usuario;
@@ -59,6 +68,8 @@ public class Solicitud {
     public Licencia getLicencia() {
         return licencia;
     }
+    */
+
 
     @Override
     public String toString() {

@@ -2,10 +2,13 @@ package com.devForce.learning.service;
 
 import com.devForce.learning.model.dto.RespuestaDTO;
 import com.devForce.learning.model.dto.UsuarioDTO;
+import com.devForce.learning.model.dto.authRequestDTO.LoginRequest;
 import com.devForce.learning.model.entity.Usuario;
+import com.devForce.learning.security.services.UserDetailsImpl;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.List;
+import javax.validation.Valid;
 
 public interface UsuarioService {
 
@@ -15,10 +18,11 @@ public interface UsuarioService {
     //Crea un UsuarioDTO a partir de un Usuario
     public UsuarioDTO crearUsuarioDTO(Usuario usuario);
 
-    //Devuelve una lista de <Usuario> como <UsuarioDTO>
-    public List<UsuarioDTO> allUsersDTO();
+    public UserDetailsImpl obtenerUsuario();
 
-    public ResponseEntity<RespuestaDTO> error(String mensaje);
+    public ResponseEntity<RespuestaDTO> login(@Valid @RequestBody LoginRequest loginRequest);
+
+
 
 
 }

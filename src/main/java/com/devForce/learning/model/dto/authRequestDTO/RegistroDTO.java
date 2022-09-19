@@ -1,4 +1,4 @@
-package com.devForce.learning.model.dto.request;
+package com.devForce.learning.model.dto.authRequestDTO;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -23,11 +23,11 @@ public class RegistroDTO {
     @NotBlank
     @Size(min = 3, max = 50)
     private String username;
- 
-    @NotBlank
+
     @Size(max = 50)
     @Email
     private String email;
+
 
     private Set<String> role;
     

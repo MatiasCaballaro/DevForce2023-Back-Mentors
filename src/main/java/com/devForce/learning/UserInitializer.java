@@ -15,8 +15,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Component
@@ -89,9 +91,41 @@ public class UserInitializer implements CommandLineRunner {
                 usuarioRepository.save(user);
             }
 
+            /* INDIVIDUAL TEST MENTOR*/
+
+            Usuario userUser = new Usuario();
+            userUser.setId(11);
+            userUser.setNombre("Nicolas");
+            userUser.setApellido("Rivas");
+            userUser.setUsername("NicolasRivas");
+            userUser.setEmail((userUser.getNombre()+"."+userUser.getApellido()+"@gire.com").toLowerCase());
+            userUser.setPassword(encoder.encode(userUser.getNombre()+"123"));
+            userUser.setPhone("123456789");
+            userUser.setHasTeams(true);
+            userUser.setRoles(userRoles);
+            System.out.println(userUser.toString());
+            usuarioRepository.save(userUser);
+
+            /* INDIVIDUAL TEST MENTOR*/
+
+            Usuario mentorUser = new Usuario();
+            mentorUser.setId(12);
+            mentorUser.setNombre("Javier");
+            mentorUser.setApellido("Ottina");
+            mentorUser.setUsername("JavierOttina");
+            mentorUser.setEmail((mentorUser.getNombre()+"."+mentorUser.getApellido()+"@gire.com").toLowerCase());
+            mentorUser.setPassword(encoder.encode(mentorUser.getNombre()+"123"));
+            mentorUser.setPhone("123456789");
+            mentorUser.setHasTeams(true);
+            mentorUser.setRoles(mentorRoles);
+            mentorUser.setMentorArea("BACKEND");
+            System.out.println(mentorUser.toString());
+            usuarioRepository.save(mentorUser);
+
             /* INDIVIDUAL TEST ADMIN*/
 
             Usuario adminUser = new Usuario();
+            adminUser.setId(13);
             adminUser.setNombre("Adrian");
             adminUser.setApellido("Pierro");
             adminUser.setUsername("AdrianPierro");
@@ -103,20 +137,7 @@ public class UserInitializer implements CommandLineRunner {
             System.out.println(adminUser.toString());
             usuarioRepository.save(adminUser);
 
-            /* INDIVIDUAL TEST ADMIN*/
 
-            Usuario mentorUser = new Usuario();
-            mentorUser.setNombre("Javier");
-            mentorUser.setApellido("Ottina");
-            mentorUser.setUsername("JavierOttina");
-            mentorUser.setEmail((mentorUser.getNombre()+"."+mentorUser.getApellido()+"@gire.com").toLowerCase());
-            mentorUser.setPassword(encoder.encode(mentorUser.getNombre()+"123"));
-            mentorUser.setPhone("123456789");
-            mentorUser.setHasTeams(true);
-            mentorUser.setRoles(mentorRoles);
-            mentorUser.setMentorArea("Backend");
-            System.out.println(mentorUser.toString());
-            usuarioRepository.save(mentorUser);
 
 
             /* Sample usuarioDTO */
@@ -142,10 +163,11 @@ public class UserInitializer implements CommandLineRunner {
                 solicitud.setDescripcion(faker.chuckNorris().fact());
                 //solicitud.setApruebaMentorID();
                 //solicitud.setApruebaAdminID();
-                solicitud.setTiempoSolicitado(45);
+                //solicitud.setTiempoSolicitado(45);
                 solicitud.setEstado("PENDIENTE-MENTOR");
-                solicitud.setArea("BACKEND DEVELOPMENT");
-                solicitud.setUsuario(usuarioRepository.findAll().stream().findAny().orElse(null));
+                solicitud.setArea("BACKEND");
+                //solicitud.setUsuario(usuarioRepository.findAll().stream().findAny().orElse(null));
+                solicitud.setUsuario(usuarioRepository.findById(11));
                 System.out.println(solicitud.toString());
 
                 solicitudRepository.save(solicitud);

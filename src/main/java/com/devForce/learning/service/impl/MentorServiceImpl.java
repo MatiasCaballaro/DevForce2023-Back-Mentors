@@ -2,11 +2,10 @@ package com.devForce.learning.service.impl;
 
 import com.devForce.learning.model.dto.RespuestaDTO;
 import com.devForce.learning.model.entity.Solicitud;
-import com.devForce.learning.repository.LicenciaRepository;
-import com.devForce.learning.repository.MentorRepository;
 import com.devForce.learning.repository.SolicitudRepository;
-import com.devForce.learning.repository.UsuarioRepository;
+import com.devForce.learning.security.services.UserDetailsImpl;
 import com.devForce.learning.service.MentorService;
+import com.devForce.learning.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,75 +15,60 @@ import org.springframework.stereotype.Service;
 public class MentorServiceImpl implements MentorService {
 
     @Autowired
-    UsuarioRepository usuarioRepository;
-
-    @Autowired
     SolicitudRepository solicitudRepository;
 
     @Autowired
-    LicenciaRepository licenciaRepository;
+    UsuarioService usuarioService;
 
-    @Autowired
-    MentorRepository mentorRepository;
-
-    public ResponseEntity<?> aceptarSolicitud (Solicitud solicitud, Integer dias) {
-        // TODO: Cada vez que el mentor aprueba una solicitud setear el apruebaMentorID
-        if (dias == null)
+    public ResponseEntity<RespuestaDTO> aceptarSolicitud (Solicitud solicitud, Integer dias) {
+        /*if (dias == null)
             return aceptarSolicitudSimple(solicitud);
         else
+            return aceptarSolicitudPlataforma(solicitud, dias);*/
+        if (solicitud.getTipo().equalsIgnoreCase("UDEMY") || solicitud.getTipo().equalsIgnoreCase("OTRA PLATAFORMA")) {
+            if(dias == null){
+                return new ResponseEntity<>(new RespuestaDTO(false,"Se necesita ingresar el 'Tiempo Solicitado' por el mentor", null), HttpStatus.BAD_REQUEST);
+            }
             return aceptarSolicitudPlataforma(solicitud, dias);
+        }
+        else if(solicitud.getTipo().equalsIgnoreCase("OTROS") || solicitud.getTipo().equalsIgnoreCase("ASESORAMIENTO")){
+            return aceptarSolicitudSimple(solicitud);
+        }
+        else {
+            return new ResponseEntity<>(new RespuestaDTO(false,"Tipo de solicitud incorrecta", null), HttpStatus.BAD_REQUEST);
+        }
     }
 
-    public ResponseEntity<?> aceptarSolicitudPlataforma (Solicitud solicitud, int dias){
-        //Verificar como es el estado base de una solicitud
-        if(!solicitud.getEstado().equals("PENDIENTE-MENTOR")){
-            return new ResponseEntity<>(new RespuestaDTO(false,"Estado de solicitud incorrecto", null), HttpStatus.FORBIDDEN);
-        }
-        if(solicitud.getTipo().equals("UDEMY")){
-            solicitud.setTiempoSolicitado(dias);
-            solicitud.setEstado("PENDIENTE-ADMIN");
-            solicitudRepository.save(solicitud);
-            return new ResponseEntity<>(new RespuestaDTO(true,"Solicitud enviada al administrador", null), HttpStatus.OK);
-        }
-
-        return new ResponseEntity<>(new RespuestaDTO(false,"Tipo de solicitud incorrecta", null), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<RespuestaDTO> aceptarSolicitudPlataforma (Solicitud solicitud, int dias){
+        solicitud.setTiempoSolicitado(dias);
+        return validacionMentor(solicitud, "PENDIENTE-ADMIN", "Solicitud aceptada por mentor. Resta la resolución por parte de un Admin");
     }
 
-    public ResponseEntity<?> aceptarSolicitudSimple (Solicitud solicitud){
-        //Verificar como es el estado base de una solicitud
-        if(!solicitud.getEstado().equals("PENDIENTE-MENTOR")){
-            return new ResponseEntity<>(new RespuestaDTO(false,"Estado de solicitud incorrecto", null), HttpStatus.FORBIDDEN);
-        }
-        if(solicitud.getTipo().equals("OTROS") || solicitud.getTipo().equals("ASESORAMIENTO")){
-            solicitud.setEstado("PENDIENTE-ADMIN");
-
-            solicitudRepository.save(solicitud);
-            return new ResponseEntity<>(new RespuestaDTO(true,"Solicitud enviada al administrador", null), HttpStatus.OK);
-        }
-
-        return new ResponseEntity<>(new RespuestaDTO(false,"Tipo de solicitud incorrecta", null), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<RespuestaDTO> aceptarSolicitudSimple (Solicitud solicitud){
+        return validacionMentor(solicitud, "ACEPTADA", "Solicitud aceptada");
     }
 
-    public ResponseEntity<?> rechazarSolicitud (Solicitud solicitud){
-        if(!solicitud.getEstado().equals("PENDIENTE-MENTOR")){
+    public ResponseEntity<RespuestaDTO> rechazarSolicitud (Solicitud solicitud){
+        return validacionMentor(solicitud, "DENEGADA", "Solicitud denegada");
+    }
+
+    public ResponseEntity<RespuestaDTO> devolverSolicitud (Solicitud solicitud){
+        return validacionMentor(solicitud, "DEVUELTA-USER", "Solicitud devuelta al usuario");
+    }
+
+    private ResponseEntity<RespuestaDTO> validacionMentor (Solicitud solicitud, String estado, String mensaje){
+        UserDetailsImpl mentor = usuarioService.obtenerUsuario();
+        if(!solicitud.getEstado().equalsIgnoreCase("PENDIENTE-MENTOR")){
             return new ResponseEntity<>(new RespuestaDTO(false,"Estado de solicitud incorrecto", null), HttpStatus.FORBIDDEN);
         }
-
-        solicitud.setEstado("RECHAZADO");
+        if(solicitudRepository.findById(solicitud.getId()).getUsuario().getId()== mentor.getId()){
+            return new ResponseEntity<>(new RespuestaDTO(false,"Solicitud no puede ser resuelta por el mismo usuario que la creó", null), HttpStatus.FORBIDDEN);
+        }
+        solicitud.setApruebaMentorID(mentor.getId().intValue());
+        solicitud.setEstado(estado);
         solicitudRepository.save(solicitud);
-        return new ResponseEntity<>(new RespuestaDTO(true,"Solicitud rechazada", null), HttpStatus.OK);
-
+        return new ResponseEntity<>(new RespuestaDTO(true,mensaje, null), HttpStatus.OK);
     }
 
-    public ResponseEntity<?> devolverSolicitud (Solicitud solicitud){
-        if(!solicitud.getEstado().equals("PENDIENTE-MENTOR")){
-            return new ResponseEntity<>(new RespuestaDTO(false,"Estado de solicitud incorrecto", null), HttpStatus.FORBIDDEN);
-        }
-
-        solicitud.setEstado("DEVUELVE-USER");
-        solicitudRepository.save(solicitud);
-        return new ResponseEntity<>(new RespuestaDTO(true,"Solicitud devuelta al usuario", null), HttpStatus.OK);
-
-    }
 
 }

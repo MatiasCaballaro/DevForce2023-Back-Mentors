@@ -1,6 +1,5 @@
 package com.devForce.learning.model.dto;
 
-import com.devForce.learning.model.entity.Usuario;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 

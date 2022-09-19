@@ -1,11 +1,5 @@
 package com.devForce.learning;
 
-import com.devForce.learning.model.dto.UsuarioDTO;
-import com.devForce.learning.model.entity.Solicitud;
-import com.devForce.learning.model.entity.Usuario;
-import com.devForce.learning.repository.SolicitudRepository;
-import com.devForce.learning.repository.UsuarioRepository;
-import com.github.javafaker.Faker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -28,7 +22,6 @@ public class LearningApplication {
 		System.out.println("Hola crack, llegaste");
 
 		return (args) -> {
-
 
 		};
 	}

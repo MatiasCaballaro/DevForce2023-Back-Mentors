@@ -1,19 +1,21 @@
 package com.devForce.learning.service.impl;
 
-import com.devForce.learning.model.dto.*;
+import com.devForce.learning.model.dto.RespuestaDTO;
+import com.devForce.learning.model.dto.SolicitudDTO;
 import com.devForce.learning.model.entity.Solicitud;
 import com.devForce.learning.model.entity.Usuario;
 import com.devForce.learning.repository.SolicitudRepository;
 import com.devForce.learning.repository.UsuarioRepository;
+import com.devForce.learning.security.services.UserDetailsImpl;
 import com.devForce.learning.service.SolicitudService;
 import com.devForce.learning.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.validation.Valid;
 
 @Service
 public class SolicitudServiceImpl implements SolicitudService {
@@ -27,8 +29,9 @@ public class SolicitudServiceImpl implements SolicitudService {
     @Autowired
     UsuarioService usuarioService;
 
+    /*
     @Override
-    public ResponseEntity<?> crearSolicitud(Solicitud solicitud) {
+    public ResponseEntity<?> crearSolicitudOld(Solicitud solicitud) {
         Usuario usuario = solicitud.getUsuario();
         RespuestaDTO respuestaDTO = new RespuestaDTO();
 //        if (!usuario.getRol().equals("MENTOR") && !usuario.getRol().equals("USER")){
@@ -43,6 +46,28 @@ public class SolicitudServiceImpl implements SolicitudService {
         return new ResponseEntity<>(respuestaDTO, HttpStatus.OK);
     }
 
+     */
+
+    @Override
+    public ResponseEntity<?> crearSolicitud(@Valid Solicitud solicitud, Authentication authentication) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Usuario usuario = usuarioRepository.findById(userDetails.getId()).get();
+        Solicitud newSolicitud = new Solicitud(
+                solicitud.getTipo(),
+                solicitud.getDescripcion(),
+                solicitud.getArea(),
+                usuario);
+
+        RespuestaDTO respuestaDTO = new RespuestaDTO();
+        newSolicitud.setEstado("PENDIENTE-MENTOR");
+        solicitudRepository.save(newSolicitud);
+        respuestaDTO.setOk(true);
+        respuestaDTO.setMensaje("Solicitud Creada");
+        respuestaDTO.setContenido(solicitud);
+        return new ResponseEntity<>(respuestaDTO, HttpStatus.OK);
+    }
+
+    /*
     @Override
     public ResponseEntity<?> devolverSolicitudesUsuario(Usuario usuario) {
         //TODO: Verificar que el usuario es el logueado
@@ -93,6 +118,8 @@ public class SolicitudServiceImpl implements SolicitudService {
         respuestaDTO.setContenido(solicitudMentorAdminDTOS);
         return new ResponseEntity<>(respuestaDTO, HttpStatus.OK);
     }
+    */
+
 
     // TODO: Terminar getTiposDeSolicitud() y getAreasDeSolicitud
     @Override
@@ -113,6 +140,7 @@ public class SolicitudServiceImpl implements SolicitudService {
         return null;
     }
 
+    /*
     @Override
     public ResponseEntity<?> getSolicitudesByIdUsuario(Long idUsuario) {
       /*  Usuario usuario = usuarioRepository.findById(idUsuario).orElse(null);
@@ -126,9 +154,10 @@ public class SolicitudServiceImpl implements SolicitudService {
                 return devolverSolicitudesMentorAdmin(usuario);
         } else {
             return error("El usuario es nulo");
-        }*/
+        }
         return error("El usuario es nulo");
     }
+    */
 
     @Override
     public SolicitudDTO crearSolicitudDTO(Solicitud solicitud) {
@@ -141,8 +170,8 @@ public class SolicitudServiceImpl implements SolicitudService {
         dto.setApruebaAdminID(solicitud.getApruebaAdminID());
         dto.setApruebaMentorID(solicitud.getApruebaMentorID());
         dto.setTiempoSolicitado(solicitud.getTiempoSolicitado());
+        dto.setArea(solicitud.getArea());
         dto.setUsuario(usuarioService.crearUsuarioDTO(solicitud.getUsuario()));
-
 
         return dto;
     }

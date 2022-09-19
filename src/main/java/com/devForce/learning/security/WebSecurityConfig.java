@@ -28,6 +28,9 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
   
   @Value("${spring.h2.console.path}")
   private String h2ConsolePath;
+
+  @Value("${test.api}")
+  private Boolean testApiEnabled;
   
   @Autowired
   UserDetailsServiceImpl userDetailsService;
@@ -68,11 +71,15 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
     http.cors().and().csrf().disable()
         .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-        .authorizeRequests().antMatchers("/api/auth/**", "/api/admin/registrarUsuario").permitAll()
-        .antMatchers("/api/test/**").permitAll()
-        .antMatchers(h2ConsolePath + "/**").permitAll()
-        .anyRequest().authenticated();
-    
+        .authorizeRequests().antMatchers("/api/auth/**").permitAll()
+        .antMatchers(h2ConsolePath + "/**").permitAll();
+
+        // Property para habilitar las API's de test
+        if(testApiEnabled){http.authorizeRequests().antMatchers("/api/test/**").permitAll();}
+            else{http.authorizeRequests().antMatchers("/api/test/**").hasRole("ADMIN");};
+
+    http.authorizeRequests().anyRequest().authenticated();
+
  // fix H2 database console: Refused to display ' in a frame because it set 'X-Frame-Options' to 'deny'
     http.headers().frameOptions().sameOrigin();
     

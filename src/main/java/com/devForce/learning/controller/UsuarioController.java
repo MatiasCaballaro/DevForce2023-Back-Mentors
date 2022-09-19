@@ -25,7 +25,7 @@ public class UsuarioController {
     UsuarioService usuarioService;
 
 
-    @RequestMapping("/usuarios")
+    @GetMapping("/test/usuarios")
     public List<Usuario> allUsers() {
         return usuarioRepository
                 .findAll()
@@ -33,26 +33,21 @@ public class UsuarioController {
                 .collect(Collectors.toList());
     }
 
-    @RequestMapping("/usuariosDTO")
+    @GetMapping("/test/usuariosDTO")
     public List<UsuarioDTO> allUsersDTO() {
-        return usuarioService.allUsersDTO();
+        return usuarioRepository.findAll().stream().map(usuarioService::crearUsuarioDTO).collect(Collectors.toList());
     }
 
-
-    @GetMapping("/usuario")
+    @GetMapping("/test/usuario")
     public ResponseEntity<Usuario> findById (@RequestParam Long id) throws Exception {
         Usuario user = usuarioRepository.findById(id).orElse(null);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
 
-    @GetMapping("/usuario/solicitudes")
-    public List<Solicitud> getSolicitudesUsuario (@RequestBody Usuario usuario) throws Exception {
-        return usuario.getSolicitudes();
-    }
-
     // TODO: Authentication que sea usuario
-    @PutMapping("/usuario/configuracion")
+
+    @PutMapping("/usuario/updatedatos")
     public ResponseEntity<RespuestaDTO> updateDatos (@RequestBody Usuario usuario) throws Exception {
         return usuarioService.updateDatos(usuario);
     }

@@ -1,8 +1,9 @@
 package com.devForce.learning.service.impl;
 
 import com.devForce.learning.model.dto.RespuestaDTO;
+import com.devForce.learning.model.dto.SolicitudDTO;
 import com.devForce.learning.model.dto.UsuarioDTO;
-import com.devForce.learning.model.dto.request.RegistroDTO;
+import com.devForce.learning.model.dto.authRequestDTO.RegistroDTO;
 import com.devForce.learning.model.entity.*;
 import com.devForce.learning.repository.LicenciaRepository;
 import com.devForce.learning.repository.RoleRepository;
@@ -11,12 +12,12 @@ import com.devForce.learning.repository.UsuarioRepository;
 import com.devForce.learning.security.jwt.JwtUtils;
 import com.devForce.learning.security.services.UserDetailsImpl;
 import com.devForce.learning.service.AdminService;
+import com.devForce.learning.service.SolicitudService;
 import com.devForce.learning.service.UsuarioService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.Locale;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @Slf4j
@@ -44,6 +45,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     UsuarioService usuarioService;
+
+    @Autowired
+    SolicitudService solicitudService;
 
     @Autowired
     PasswordEncoder encoder;
@@ -78,6 +82,7 @@ public class AdminServiceImpl implements AdminService {
 
         Set<String> strRoles = registroDTO.getRole();
         Set<Role> roles = new HashSet<>();
+        AtomicInteger mentorAreaIsMissing= new AtomicInteger();
 
         if (strRoles == null) {
             Role userRole = roleRepository.findByName(ERole.ROLE_USUARIO)
@@ -92,22 +97,28 @@ public class AdminServiceImpl implements AdminService {
                         roles.add(adminRole);
 
                         break;
-                    case "mod":
+                    case "mentor":
                         Role modRole = roleRepository.findByName(ERole.ROLE_MENTOR)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(modRole);
+                        Role userRoleMentor = roleRepository.findByName(ERole.ROLE_USUARIO)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(userRoleMentor);
+                        if(registroDTO.getMentorArea()==null){
+                            mentorAreaIsMissing.getAndIncrement();
+                        }
+
 
                         break;
-                    case "user":
-                        Role userRole = roleRepository.findByName(ERole.ROLE_USUARIO)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(userRole);
                     default:
                         Role defaultRole = roleRepository.findByName(ERole.ROLE_USUARIO)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(defaultRole);
                 }
             });
+        }
+        if(mentorAreaIsMissing.get() ==1){
+            return new ResponseEntity<>(new RespuestaDTO(false,"Falta definir un area para el mentor", null), HttpStatus.BAD_REQUEST);
         }
 
         user.setRoles(roles);
@@ -122,39 +133,16 @@ public class AdminServiceImpl implements AdminService {
 
 
 
-    /** Crea un Usuario nuevo en la base a partir de un objeto usuario
-     @Param Usuario
-     */
-    @Override
-    public void addUsuario(Usuario usuario) {
-        Usuario newUsuario = new Usuario(
-                usuario.getNombre(),
-                usuario.getApellido(),
-                usuario.getUsername(),
-                usuario.getEmail(),
-                usuario.getPassword(),
-                usuario.getPhone(),
-                //usuario.getRol(),
-                usuario.getHasTeams(),
-                usuario.getMentorArea()
-        );
-        usuarioRepository.save(newUsuario);
-    }
-
 
     /**Intenta asignar una licencia a una solicitud.
      * Si el usuario ya tiene una solicitud con licencia activa del mismo tipo de solicitud, se le extiende el tiempo
      * de la licencia que ya tiene asignada
      @Param Solicitud
      */
-    //TODO: Probar asignarLicenciaMétodo (con Authentication)
     @Override
-    public ResponseEntity<?> asignarLicencia(Solicitud solicitud, Authentication authentication) {
+    public ResponseEntity<?> asignarLicencia(Solicitud solicitud) {
 
-        // AGREGO ESTO PARA TESTING SOLAMENTE, DESPUES BORRAR
-        solicitud.setEstado("PENDIENTE-ADMIN");
-        System.out.println("El usuario de la solicitud es: " + solicitud.getUsuario());
-        //
+        UserDetailsImpl admin = usuarioService.obtenerUsuario();
 
         if(!solicitud.getEstado().equals("PENDIENTE-ADMIN")){
             return new ResponseEntity<>(new RespuestaDTO(false,"Estado de solicitud incorrecto", null), HttpStatus.FORBIDDEN);
@@ -164,10 +152,10 @@ public class AdminServiceImpl implements AdminService {
         List<Solicitud> solicitudesAceptadas = solicitudRepository.findByUsuarioAndTipoAndEstado(solicitud.getUsuario(), solicitud.getTipo(), "ACEPTADA");
             for (Solicitud solicitudAux : solicitudesAceptadas){
                 if (!solicitudAux.getLicencia().getVencimiento().isBefore(LocalDate.now())) {
-                    return darLicencia(solicitud,solicitudAux, authentication);
+                    return darLicencia(solicitud,solicitudAux);
                 }
             }
-        return darLicencia(solicitud,null, authentication);
+        return darLicencia(solicitud,null);
     }
 
     /**Asigna una licencia a una solicitud
@@ -175,9 +163,9 @@ public class AdminServiceImpl implements AdminService {
      @Param Solicitud solicitud
      @Param Solicitud solicitudAux
      */
-    private ResponseEntity<?> darLicencia (Solicitud solicitud, Solicitud solicitudAux, Authentication authentication){
+    private ResponseEntity<?> darLicencia (Solicitud solicitud, Solicitud solicitudAux){
 
-        UserDetailsImpl adminlogueado = (UserDetailsImpl) authentication;
+        UserDetailsImpl admin = usuarioService.obtenerUsuario();
 
         Licencia licencia;
         HttpStatus httpStatus = HttpStatus.CREATED;
@@ -195,16 +183,17 @@ public class AdminServiceImpl implements AdminService {
 
         solicitud.setLicencia(licencia);
         solicitud.setEstado("ACEPTADA");
-        solicitud.setApruebaAdminID(adminlogueado.getId().intValue());
+        solicitud.setApruebaAdminID(admin.getId().intValue());
         solicitudRepository.save(solicitud);
         licencia.setEstado("ASIGNADA");
         asignarTiempo(solicitud);
         licenciaRepository.save(licencia);
-        solicitud=solicitudRepository.findById(solicitud.getId());
+
+        SolicitudDTO contenido= solicitudService.crearSolicitudDTO(solicitudRepository.findById(solicitud.getId()));
 
         RespuestaDTO respuestaDTO = new RespuestaDTO();
         respuestaDTO.setMensaje(mensaje);
-        respuestaDTO.setContenido(solicitud);
+        respuestaDTO.setContenido(contenido);
         respuestaDTO.setOk(true);
 
         return new ResponseEntity<>(respuestaDTO, httpStatus);

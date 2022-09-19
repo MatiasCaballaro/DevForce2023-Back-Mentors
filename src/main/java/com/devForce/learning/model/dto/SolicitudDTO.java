@@ -1,6 +1,5 @@
 package com.devForce.learning.model.dto;
 
-import com.devForce.learning.model.entity.Licencia;
 import lombok.*;
 
 @Getter

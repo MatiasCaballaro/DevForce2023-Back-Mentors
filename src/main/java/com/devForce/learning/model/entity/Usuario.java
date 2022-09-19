@@ -1,13 +1,15 @@
 package com.devForce.learning.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -42,6 +44,7 @@ public class Usuario {
     @Column(name = "hasTeams")
     private Boolean hasTeams;
 
+    // TODO utilizar el EMentorArea para realizar la relación. Enviar al front por API para la validación de formularios, o coordinar con front.
     @Column(name = "mentorArea", length = 25)
     private String mentorArea;
 
@@ -92,9 +95,10 @@ public class Usuario {
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +
-                //", username='" + username + '\'' +
-                //", email='" + email + '\'' +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
                 //", password='" + password + '\'' +
+                ", roles='" + roles + '\'' +
                 //", phone='" + phone + '\'' +
                 //", hasTeams=" + hasTeams +
 //                ", solicitudes=" + solicitudes.stream().map(s -> s.getSolicitudId()).collect(Collectors.toList()) +

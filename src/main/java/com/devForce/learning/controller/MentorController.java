@@ -4,6 +4,7 @@ import com.devForce.learning.model.entity.Solicitud;
 import com.devForce.learning.service.MentorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,21 +14,20 @@ public class MentorController {
     @Autowired
     MentorService mentorService;
 
-    //TODO probar método para que el mentor pase la solicitud a "PENDIENTE MENTOR"
-    //TODO PreAuthorize("MENTOR")
-
     @PutMapping("/aceptarSolicitud")
+    @PreAuthorize("hasRole('MENTOR')")
     public ResponseEntity<?> aceptarSolicitud(@RequestBody Solicitud solicitud, @RequestParam(required = false) Integer dias) throws Exception {
         return mentorService.aceptarSolicitud(solicitud, dias);
     }
 
     @PutMapping("/rechazarSolicitudPlataforma")
+    @PreAuthorize("hasRole('MENTOR')")
     public ResponseEntity<?> rechazarSolicitudPlataforma(@RequestBody Solicitud solicitud) throws Exception {
         return mentorService.rechazarSolicitud(solicitud);
     }
 
-    //TODO probar método para que el mentor pase la solicitud a "DEVUELTO-USER"
     @PutMapping("/devolverSolicitudPlataforma")
+    @PreAuthorize("hasRole('MENTOR')")
     public ResponseEntity<?> devolverSolicitudPlataforma(@RequestBody Solicitud solicitud) throws Exception {
         return mentorService.devolverSolicitud(solicitud);
     }
