@@ -23,7 +23,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -111,7 +110,6 @@ public class AdminServiceImpl implements AdminService {
                             mentorAreaIsMissing.getAndIncrement();
                         }
 
-
                         break;
                     default:
                         Role defaultRole = roleRepository.findByName(ERole.ROLE_USUARIO)
@@ -133,9 +131,6 @@ public class AdminServiceImpl implements AdminService {
 
         return new ResponseEntity<>(new RespuestaDTO(true,"Usuario creado!",contenido),HttpStatus.OK);
     }
-
-
-
 
     /**Intenta asignar una licencia a una solicitud.
      * Si el usuario ya tiene una solicitud con licencia activa del mismo tipo de solicitud, se le extiende el tiempo

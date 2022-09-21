@@ -21,10 +21,6 @@ public class MentorServiceImpl implements MentorService {
     UsuarioService usuarioService;
 
     public ResponseEntity<RespuestaDTO> aceptarSolicitud (Solicitud solicitud, Integer dias) {
-        /*if (dias == null)
-            return aceptarSolicitudSimple(solicitud);
-        else
-            return aceptarSolicitudPlataforma(solicitud, dias);*/
         if (solicitud.getTipo().equalsIgnoreCase("UDEMY") || solicitud.getTipo().equalsIgnoreCase("OTRA PLATAFORMA")) {
             if(dias == null){
                 return new ResponseEntity<>(new RespuestaDTO(false,"Se necesita ingresar el 'Tiempo Solicitado' por el mentor", null), HttpStatus.BAD_REQUEST);

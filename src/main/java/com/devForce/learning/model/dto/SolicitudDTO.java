@@ -11,7 +11,7 @@ public class SolicitudDTO {
 
     private long id;
 
-    private String tipo, descripcion, estado, area;
+    private String tipo, descripcion, estado, area, link;
 
     private int apruebaMentorID, apruebaAdminID, tiempoSolicitado;
 

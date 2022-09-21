@@ -31,6 +31,9 @@ public class Solicitud {
     @Column(name = "area", length = 50)
     private String area;
 
+    @Column(name = "link", length = 250)
+    private String link;
+
     @Column(name = "apruebaMentorID")
     private int apruebaMentorID;
 
@@ -55,6 +58,14 @@ public class Solicitud {
         this.tipo = tipo;
         this.descripcion = descripcion;
         this.area = area;
+        this.usuario = usuario;
+    }
+
+    public Solicitud(String tipo, String descripcion, String area, String link, Usuario usuario) {
+        this.tipo = tipo;
+        this.descripcion = descripcion;
+        this.area = area;
+        this.link= link;
         this.usuario = usuario;
     }
 

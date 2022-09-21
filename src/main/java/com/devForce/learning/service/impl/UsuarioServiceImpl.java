@@ -79,13 +79,6 @@ public class UsuarioServiceImpl implements UsuarioService {
         dto.setPhone(usuario.getPhone());
         dto.setHasTeams(usuario.getHasTeams());
         dto.setRoles(usuario.getRoles());
-        /*
-        dto.setSolicitudes(
-                usuario.getSolicitudes()
-                        .stream()
-                        .map(s -> solicitudService.crearSolicitudDTO(s))
-                        .collect(Collectors.toList()));
-        */
 
         return dto;
     }
@@ -103,13 +96,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-
         ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
-
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
