@@ -2,6 +2,7 @@ package com.devForce.learning.model.dto;
 
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class LicenciaDTO {
 
     private String serie, estado, plataforma;
 
-    private LocalDateTime vencimiento;
+    private LocalDate vencimiento;
 
     private List<SolicitudDTO> solicitudes;
 

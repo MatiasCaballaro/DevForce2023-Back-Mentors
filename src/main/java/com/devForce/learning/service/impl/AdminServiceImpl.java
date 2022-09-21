@@ -1,5 +1,6 @@
 package com.devForce.learning.service.impl;
 
+import com.devForce.learning.model.dto.LicenciaDTO;
 import com.devForce.learning.model.dto.RespuestaDTO;
 import com.devForce.learning.model.dto.SolicitudDTO;
 import com.devForce.learning.model.dto.UsuarioDTO;
@@ -22,10 +23,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -214,8 +217,23 @@ public class AdminServiceImpl implements AdminService {
         }
     }
 
-    public List<Licencia> getLicencias (){
-        return licenciaRepository.findAll();
+    public List<LicenciaDTO> getLicencias (){
+        List<Licencia> listaLicencias = licenciaRepository.findAll();
+        return listaLicencias
+                .stream()
+                .map(this::crearLicenciaDTO)
+                .collect(Collectors.toList());
     }
+
+    private LicenciaDTO crearLicenciaDTO(Licencia licencia) {
+        return new LicenciaDTO(licencia.getId(),
+                licencia.getSerie(),
+                licencia.getEstado(),
+                licencia.getPlataforma(),
+                licencia.getVencimiento(),
+                licencia.getSolicitudes().stream().map(solicitud -> solicitudService.crearSolicitudDTO(solicitud)).collect(Collectors.toList()));
+
+    }
+
 
 }

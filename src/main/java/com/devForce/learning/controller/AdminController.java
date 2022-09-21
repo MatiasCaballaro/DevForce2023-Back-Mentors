@@ -1,5 +1,6 @@
 package com.devForce.learning.controller;
 
+import com.devForce.learning.model.dto.LicenciaDTO;
 import com.devForce.learning.model.dto.RespuestaDTO;
 import com.devForce.learning.model.dto.authRequestDTO.RegistroDTO;
 import com.devForce.learning.model.entity.Licencia;
@@ -35,7 +36,7 @@ public class AdminController {
 
     @GetMapping("/licencias")
     @PreAuthorize("hasRole('ADMIN')")
-    public List<Licencia> getLicencias() {
+    public List<LicenciaDTO> getLicencias() {
         return adminservice.getLicencias();
     }
 

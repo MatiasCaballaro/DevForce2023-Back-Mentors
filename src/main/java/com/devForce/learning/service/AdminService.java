@@ -1,5 +1,6 @@
 package com.devForce.learning.service;
 
+import com.devForce.learning.model.dto.LicenciaDTO;
 import com.devForce.learning.model.entity.Licencia;
 import com.devForce.learning.model.dto.RespuestaDTO;
 import com.devForce.learning.model.dto.authRequestDTO.RegistroDTO;
@@ -16,6 +17,6 @@ public interface AdminService {
 
     public ResponseEntity<?> asignarLicencia(Solicitud solicitud);
 
-    public List<Licencia> getLicencias ();
+    public List<LicenciaDTO> getLicencias ();
 
 }
