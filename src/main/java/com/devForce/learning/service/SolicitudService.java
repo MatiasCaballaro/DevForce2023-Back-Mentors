@@ -2,30 +2,25 @@ package com.devForce.learning.service;
 
 import com.devForce.learning.model.dto.SolicitudDTO;
 import com.devForce.learning.model.entity.Solicitud;
+import com.devForce.learning.model.entity.Usuario;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+
+import java.util.List;
 
 public interface SolicitudService {
 
     public ResponseEntity<?> crearSolicitud(Solicitud solicitud, Authentication authentication);
 
-
-
-
-    public ResponseEntity<?> error(String mensaje);
-
-
     public ResponseEntity<?> getTiposDeSolicitud();
 
     public ResponseEntity<?> getAreasDeSolicitud();
 
-    /*
-    public ResponseEntity<?> devolverSolicitudesUsuario(Usuario usuario);
+    public List<SolicitudDTO> solicitudesUsuario();
 
-    public ResponseEntity<?> devolverSolicitudesMentorAdmin(Usuario usuario);
+    public List<SolicitudDTO> solicitudesMentor();
 
-    public ResponseEntity<?> getSolicitudesByIdUsuario(Long idUsuario);
-     */
+    public List<SolicitudDTO> solicitudesAdmin();
 
     public SolicitudDTO crearSolicitudDTO(Solicitud solicitud);
 }

@@ -1,4 +1,4 @@
-package com.devForce.learning.model.entity;
+package com.devForce.learning.model.enums;
 
 public enum ERole {
   ROLE_USUARIO,

@@ -16,6 +16,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SolicitudServiceImpl implements SolicitudService {
@@ -64,20 +68,33 @@ public class SolicitudServiceImpl implements SolicitudService {
     // TODO: Terminar getTiposDeSolicitud() y getAreasDeSolicitud
     @Override
     public ResponseEntity<?> getTiposDeSolicitud() {
-        RespuestaDTO respuestaDTO = new RespuestaDTO();
-        respuestaDTO.setOk(true);
-        respuestaDTO.setMensaje("");
-
         return null;
     }
 
     @Override
     public ResponseEntity<?> getAreasDeSolicitud() {
-        RespuestaDTO respuestaDTO = new RespuestaDTO();
-        respuestaDTO.setOk(true);
-        respuestaDTO.setMensaje("");
-
         return null;
+    }
+
+    @Override
+    public List<SolicitudDTO> solicitudesUsuario() {
+        UserDetailsImpl usuarioAuth = usuarioService.obtenerUsuario();
+        Optional<Usuario> usuario = usuarioRepository.findById(usuarioAuth.getId());
+        return new ArrayList<>(solicitudRepository.findByUsuario(usuario.get())
+                .stream().map(sol -> crearSolicitudDTO(sol)).collect(Collectors.toList()));
+    }
+
+    @Override
+    public List<SolicitudDTO> solicitudesMentor(){
+        UserDetailsImpl usuarioAuth = usuarioService.obtenerUsuario();
+        Optional<Usuario> usuario = usuarioRepository.findById(usuarioAuth.getId());
+        return new ArrayList<>(solicitudRepository.findByUsuarioNot(usuario.get())
+                .stream().map(sol -> crearSolicitudDTO(sol)).collect(Collectors.toList()));
+    }
+
+    @Override
+    public List<SolicitudDTO> solicitudesAdmin(){
+        return new ArrayList<SolicitudDTO>(solicitudRepository.findAll().stream().map(sol->crearSolicitudDTO(sol)).collect(Collectors.toList()));
     }
 
     @Override
@@ -98,14 +115,6 @@ public class SolicitudServiceImpl implements SolicitudService {
         return dto;
     }
 
-    @Override
-    public ResponseEntity<?> error(String mensaje) {
-        RespuestaDTO respuestaDTO = new RespuestaDTO();
-        respuestaDTO.setOk(false);
-        respuestaDTO.setMensaje(mensaje);
-        respuestaDTO.setContenido(null);
-        return new ResponseEntity<>(respuestaDTO, HttpStatus.BAD_REQUEST);
-    }
 
 
 }

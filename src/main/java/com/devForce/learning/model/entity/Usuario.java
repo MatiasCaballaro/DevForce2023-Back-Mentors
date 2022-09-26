@@ -1,10 +1,7 @@
 package com.devForce.learning.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -15,6 +12,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = {"password", "phone", "hasTeams", "solicitudes"} )
 @Entity
 @Table(name = "usuario")
 public class Usuario {
@@ -54,8 +52,6 @@ public class Usuario {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-
-
     //Relación con solicitud
     @OneToMany(mappedBy="usuario", fetch=FetchType.EAGER)
     private List<Solicitud> solicitudes;
@@ -66,7 +62,7 @@ public class Usuario {
     }
 
 
-//Constructor
+
    public Usuario(String nombre, String apellido, String username, String email, String password, String phone, Boolean hasTeams, String mentorArea) {
         this.nombre = nombre;
         this.apellido = apellido;
@@ -89,19 +85,4 @@ public class Usuario {
         this.roles = roles;
     }
 
-    @Override
-    public String toString() {
-        return "Usuario{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
-                ", apellido='" + apellido + '\'' +
-                ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                //", password='" + password + '\'' +
-                ", roles='" + roles + '\'' +
-                //", phone='" + phone + '\'' +
-                //", hasTeams=" + hasTeams +
-//                ", solicitudes=" + solicitudes.stream().map(s -> s.getSolicitudId()).collect(Collectors.toList()) +
-                '}';
-    }
 }

@@ -2,7 +2,9 @@ package com.devForce.learning.service.impl;
 
 import com.devForce.learning.model.dto.RespuestaDTO;
 import com.devForce.learning.model.entity.Solicitud;
+import com.devForce.learning.model.entity.Usuario;
 import com.devForce.learning.repository.SolicitudRepository;
+import com.devForce.learning.repository.UsuarioRepository;
 import com.devForce.learning.security.services.UserDetailsImpl;
 import com.devForce.learning.service.MentorService;
 import com.devForce.learning.service.UsuarioService;
@@ -16,6 +18,9 @@ public class MentorServiceImpl implements MentorService {
 
     @Autowired
     SolicitudRepository solicitudRepository;
+
+    @Autowired
+    UsuarioRepository usuarioRepository;
 
     @Autowired
     UsuarioService usuarioService;
@@ -54,8 +59,12 @@ public class MentorServiceImpl implements MentorService {
 
     private ResponseEntity<RespuestaDTO> validacionMentor (Solicitud solicitud, String estado, String mensaje){
         UserDetailsImpl mentor = usuarioService.obtenerUsuario();
+        Usuario mentorUser = usuarioRepository.findById(mentor.getId()).orElse(null);
         if(!solicitud.getEstado().equalsIgnoreCase("PENDIENTE-MENTOR")){
             return new ResponseEntity<>(new RespuestaDTO(false,"Estado de solicitud incorrecto", null), HttpStatus.FORBIDDEN);
+        }
+        if(mentorUser==null || !mentorUser.getMentorArea().equalsIgnoreCase(solicitud.getArea())){
+            return new ResponseEntity<>(new RespuestaDTO(false,"No se tienen permisos para resolver esta solicitud", null), HttpStatus.FORBIDDEN);
         }
         if(solicitudRepository.findById(solicitud.getId()).getUsuario().getId()== mentor.getId()){
             return new ResponseEntity<>(new RespuestaDTO(false,"Solicitud no puede ser resuelta por el mismo usuario que la creó", null), HttpStatus.FORBIDDEN);

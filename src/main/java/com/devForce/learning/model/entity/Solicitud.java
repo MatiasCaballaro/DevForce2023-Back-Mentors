@@ -70,17 +70,6 @@ public class Solicitud {
     }
 
 
-    /*
-    //@JsonIgnore
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public Licencia getLicencia() {
-        return licencia;
-    }
-    */
-
 
     @Override
     public String toString() {

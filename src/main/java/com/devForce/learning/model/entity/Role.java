@@ -1,5 +1,6 @@
 package com.devForce.learning.model.entity;
 
+import com.devForce.learning.model.enums.ERole;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

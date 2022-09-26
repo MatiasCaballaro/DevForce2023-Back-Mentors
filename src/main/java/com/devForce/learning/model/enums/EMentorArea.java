@@ -1,4 +1,4 @@
-package com.devForce.learning.model.entity;
+package com.devForce.learning.model.enums;
 
 public enum EMentorArea {
     BACKEND,

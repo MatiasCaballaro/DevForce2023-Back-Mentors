@@ -1,6 +1,6 @@
 package com.devForce.learning.repository;
 
-import com.devForce.learning.model.entity.ERole;
+import com.devForce.learning.model.enums.ERole;
 import com.devForce.learning.model.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

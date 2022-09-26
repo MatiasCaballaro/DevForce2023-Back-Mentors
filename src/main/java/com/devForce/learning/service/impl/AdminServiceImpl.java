@@ -6,6 +6,7 @@ import com.devForce.learning.model.dto.SolicitudDTO;
 import com.devForce.learning.model.dto.UsuarioDTO;
 import com.devForce.learning.model.dto.authRequestDTO.RegistroDTO;
 import com.devForce.learning.model.entity.*;
+import com.devForce.learning.model.enums.ERole;
 import com.devForce.learning.repository.LicenciaRepository;
 import com.devForce.learning.repository.RoleRepository;
 import com.devForce.learning.repository.SolicitudRepository;
