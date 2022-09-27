@@ -45,8 +45,6 @@ public class UsuarioController {
     }
 
 
-    // TODO: Authentication que sea usuario
-
     @PutMapping("/usuario/updatedatos")
     public ResponseEntity<RespuestaDTO> updateDatos (@RequestBody Usuario usuario) throws Exception {
         return usuarioService.updateDatos(usuario);
