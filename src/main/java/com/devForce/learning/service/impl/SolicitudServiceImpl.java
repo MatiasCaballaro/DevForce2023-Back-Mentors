@@ -84,6 +84,7 @@ public class SolicitudServiceImpl implements SolicitudService {
                 .stream().map(sol -> crearSolicitudDTO(sol)).collect(Collectors.toList()));
     }
 
+    // TODO filtrar tambien por el area del mentor
     @Override
     public List<SolicitudDTO> solicitudesMentor(){
         UserDetailsImpl usuarioAuth = usuarioService.obtenerUsuario();
