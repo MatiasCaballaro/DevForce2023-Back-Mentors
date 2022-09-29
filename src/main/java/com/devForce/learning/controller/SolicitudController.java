@@ -48,7 +48,7 @@ public class SolicitudController {
     }
 
     @GetMapping("/solicitudesusuario")
-    @PreAuthorize("hasRole('USUARIO')")
+    //@PreAuthorize("hasRole('USUARIO')")
     public List<SolicitudDTO> solicitudesUsuario(){
         return solicitudService.solicitudesUsuario();
     }

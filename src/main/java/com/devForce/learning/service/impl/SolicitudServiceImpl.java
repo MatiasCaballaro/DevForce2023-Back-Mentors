@@ -78,8 +78,8 @@ public class SolicitudServiceImpl implements SolicitudService {
 
     @Override
     public List<SolicitudDTO> solicitudesUsuario() {
-        UserDetailsImpl usuarioAuth = usuarioService.obtenerUsuario();
-        Optional<Usuario> usuario = usuarioRepository.findById(usuarioAuth.getId());
+
+        Optional<Usuario> usuario = usuarioRepository.findByUsername("NicolasRivas");
         return new ArrayList<>(solicitudRepository.findByUsuario(usuario.get())
                 .stream().map(sol -> crearSolicitudDTO(sol)).collect(Collectors.toList()));
     }
