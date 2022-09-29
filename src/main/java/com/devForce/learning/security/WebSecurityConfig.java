@@ -86,7 +86,7 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
     http.cors().and().csrf().disable()
         .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-        .authorizeRequests().antMatchers("/api/auth/**").permitAll()
+        .authorizeRequests().antMatchers("**").permitAll()
         .antMatchers(h2ConsolePath + "/**").permitAll();
 
         // Property para habilitar las API's de test
