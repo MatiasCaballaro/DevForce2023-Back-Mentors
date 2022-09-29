@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface SolicitudService {
 
-    public ResponseEntity<?> crearSolicitud(Solicitud solicitud, Authentication authentication);
+    public ResponseEntity<?> crearSolicitud(Solicitud solicitud/*, Authentication authentication*/);
 
     public ResponseEntity<?> getTiposDeSolicitud();
 

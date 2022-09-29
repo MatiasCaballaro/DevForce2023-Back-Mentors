@@ -35,9 +35,10 @@ public class SolicitudServiceImpl implements SolicitudService {
 
 
     @Override
-    public ResponseEntity<?> crearSolicitud(@Valid Solicitud solicitud, Authentication authentication) {
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        Usuario usuario = usuarioRepository.findById(userDetails.getId()).get();
+    public ResponseEntity<?> crearSolicitud(@Valid Solicitud solicitud/*, Authentication authentication*/) {
+        //UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        //Usuario usuario = usuarioRepository.findById(userDetails.getId()).get();
+        Usuario usuario = usuarioRepository.findByNombreAndApellido("Nicolas", "Rivas");
         Solicitud newSolicitud = new Solicitud(
                 solicitud.getTipo(),
                 solicitud.getDescripcion(),

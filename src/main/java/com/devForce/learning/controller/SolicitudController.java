@@ -66,9 +66,9 @@ public class SolicitudController {
     }
 
     @PostMapping("/nuevaSolicitud")
-    @PreAuthorize("hasRole('USUARIO')")
-    public ResponseEntity<?> nuevaSolicitud (@RequestBody Solicitud solicitud, Authentication authentication){
-        return solicitudService.crearSolicitud(solicitud, authentication);
+    //@PreAuthorize("hasRole('USUARIO')")
+    public ResponseEntity<?> nuevaSolicitud (@RequestBody Solicitud solicitud/*, Authentication authentication*/){
+        return solicitudService.crearSolicitud(solicitud/*, authentication*/);
     }
 
     @GetMapping("/test/areas")
