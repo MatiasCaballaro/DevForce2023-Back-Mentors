@@ -13,7 +13,7 @@ public interface SolicitudRepository extends JpaRepository<Solicitud,Long> {
 
     List<Solicitud> findByUsuario (Usuario usuario);
 
-    List<Solicitud> findByUsuarioNot (Usuario usuario);
+    List<Solicitud> findByUsuarioNotAndArea (Usuario usuario, String area);
 
     List<Solicitud> findByUsuarioAndTipoAndEstado (Usuario usuario, String tipo, String estado);
 

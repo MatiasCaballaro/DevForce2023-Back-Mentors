@@ -84,12 +84,11 @@ public class SolicitudServiceImpl implements SolicitudService {
                 .stream().map(sol -> crearSolicitudDTO(sol)).collect(Collectors.toList()));
     }
 
-    // TODO filtrar tambien por el area del mentor
     @Override
     public List<SolicitudDTO> solicitudesMentor(){
         UserDetailsImpl usuarioAuth = usuarioService.obtenerUsuario();
         Optional<Usuario> usuario = usuarioRepository.findById(usuarioAuth.getId());
-        return new ArrayList<>(solicitudRepository.findByUsuarioNot(usuario.get())
+        return new ArrayList<>(solicitudRepository.findByUsuarioNotAndArea(usuario.get(),usuario.get().getMentorArea())
                 .stream().map(sol -> crearSolicitudDTO(sol)).collect(Collectors.toList()));
     }
 
