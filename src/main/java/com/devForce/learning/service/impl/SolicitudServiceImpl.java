@@ -88,8 +88,9 @@ public class SolicitudServiceImpl implements SolicitudService {
     // TODO filtrar tambien por el area del mentor
     @Override
     public List<SolicitudDTO> solicitudesMentor(){
-        UserDetailsImpl usuarioAuth = usuarioService.obtenerUsuario();
-        Optional<Usuario> usuario = usuarioRepository.findById(usuarioAuth.getId());
+        //UserDetailsImpl usuarioAuth = usuarioService.obtenerUsuario();
+        //Optional<Usuario> usuario = usuarioRepository.findById(usuarioAuth.getId());
+        Optional<Usuario> usuario = usuarioRepository.findByUsername("JavierOttina");
         return new ArrayList<>(solicitudRepository.findByUsuarioNot(usuario.get())
                 .stream().map(sol -> crearSolicitudDTO(sol)).collect(Collectors.toList()));
     }

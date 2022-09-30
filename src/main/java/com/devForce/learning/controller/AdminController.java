@@ -36,7 +36,7 @@ public class AdminController {
 
 
     @GetMapping("/licencias")
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public List<LicenciaDTO> getLicencias() {
         return adminservice.getLicencias();
     }

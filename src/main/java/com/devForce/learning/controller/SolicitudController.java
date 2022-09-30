@@ -54,13 +54,13 @@ public class SolicitudController {
     }
 
     @GetMapping("/solicitudesmentor")
-    @PreAuthorize("hasRole('MENTOR')")
+    //@PreAuthorize("hasRole('MENTOR')")
     public List<SolicitudDTO> solicitudesMentor(){
         return solicitudService.solicitudesMentor();
     }
 
     @GetMapping("/solicitudesadmin")
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     public List<SolicitudDTO> solicitudesAdmin() {
         return solicitudService.solicitudesAdmin();
     }
