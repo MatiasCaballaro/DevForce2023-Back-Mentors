@@ -75,7 +75,7 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
     final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
     configuration.setAllowedOrigins(Collections.singletonList("http://127.0.0.1:5173"));
-    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "OPTIONS"));
+    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "OPTIONS", "PUT"));
     configuration.setAllowCredentials(true);
 
     source.registerCorsConfiguration("/**", configuration);
