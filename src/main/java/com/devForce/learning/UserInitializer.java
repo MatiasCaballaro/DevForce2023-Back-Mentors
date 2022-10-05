@@ -16,6 +16,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -176,16 +177,19 @@ public class UserInitializer implements CommandLineRunner {
             }
 
 
-            /* INDIVIDUAL TEST SOLICITUD*/
+            /*INDIVIDUAL TEST SOLICITUD*/
 
-            /*Solicitud solicitud = new Solicitud();
-            solicitud.setSolicitudId(1L);
-            solicitud.setTipo("Udemy");
-            solicitud.setEstado("pendienteAdmin");
-            solicitud.setDescripcion(faker.chuckNorris().fact());
-            //solicitud.setUsuario(usuarioRepository.findAll().stream().findAny().orElse(null));
-            System.out.println(solicitud.toString());
-            solicitudRepository.save(solicitud);*/
+            Solicitud solicitudPendienteAdmin = new Solicitud();
+            solicitudPendienteAdmin.setId(11L);
+            solicitudPendienteAdmin.setTipo("Udemy");
+            solicitudPendienteAdmin.setEstado("PENDIENTE-MENTOR");
+            solicitudPendienteAdmin.setArea("BACKEND");
+            solicitudPendienteAdmin.setDescripcion(faker.chuckNorris().fact());
+            solicitudPendienteAdmin.setUsuario(usuarioRepository.findById(11L));
+            System.out.println(solicitudPendienteAdmin.toString());
+            solicitudRepository.save(solicitudPendienteAdmin);
+
+
 
 
             /* CREACION DE LICENCIAS */
@@ -208,8 +212,34 @@ public class UserInitializer implements CommandLineRunner {
                 licenciaRepository.save(licencia);
             }
 
+
+            /*INDIVIDUAL TEST SOLICITUD*/
+
+            Solicitud solicitudConLicenciaAsignada = new Solicitud();
+            solicitudConLicenciaAsignada.setId(12L);
+            solicitudConLicenciaAsignada.setTipo("Udemy");
+            solicitudConLicenciaAsignada.setEstado("ACEPTADA");
+            solicitudConLicenciaAsignada.setArea("BACKEND");
+            solicitudConLicenciaAsignada.setDescripcion(faker.chuckNorris().fact());
+            solicitudConLicenciaAsignada.setUsuario(usuarioRepository.findById(11L));
+            solicitudConLicenciaAsignada.setLicencia(licenciaRepository.findById(1L));
+            solicitudConLicenciaAsignada.setApruebaMentorID(12);
+            solicitudConLicenciaAsignada.setTiempoSolicitado(15);
+            solicitudConLicenciaAsignada.setApruebaAdminID(13);
+            solicitudConLicenciaAsignada.setLink("http:://lalala.com");
+            System.out.println(solicitudConLicenciaAsignada.toString());
+            solicitudRepository.save(solicitudConLicenciaAsignada);
+
             Licencia licenciaPrueba= licenciaRepository.findById(1L);
+
+            List<Solicitud> listaSolicitudPrueba = new ArrayList<Solicitud>();
+            listaSolicitudPrueba.add(solicitudConLicenciaAsignada);
+            licenciaPrueba.setSolicitudes(listaSolicitudPrueba);
+            licenciaPrueba.setEstado("ASIGNADA");
+            licenciaPrueba.setVencimiento(LocalDate.now().plusDays(15));
+
             System.out.println("licenciaPrueba = " + licenciaPrueba);
+            licenciaRepository.save(licenciaPrueba);
             
             Licencia licenciaPrueba2= licenciaRepository.findBySerie(licenciaPrueba.getSerie());
             System.out.println("licenciaPrueba2 = " + licenciaPrueba2);
