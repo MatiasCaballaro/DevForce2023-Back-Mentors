@@ -175,11 +175,11 @@ public class AdminServiceImpl implements AdminService {
         if (solicitudAux!=null){
             licencia = solicitudAux.getLicencia();
             httpStatus = HttpStatus.OK;
-            mensaje = "Licencia extendida";
+            mensaje = "Serial de licencia asignada: "+ licencia.getSerie();
         }
         else {
             licencia = licenciaRepository.findFirstByEstadoOrderById("DISPONIBLE");
-            mensaje = "Licencia asignada";
+            mensaje = "Serial de licencia extendida: "+ licencia.getSerie();
         }
 
         solicitud.setLicencia(licencia);
