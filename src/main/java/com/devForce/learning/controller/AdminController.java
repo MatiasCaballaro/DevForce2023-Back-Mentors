@@ -41,5 +41,17 @@ public class AdminController {
         return adminservice.getLicencias();
     }
 
+    @PutMapping("/revocarLicencia")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<RespuestaDTO> revocarLic(@RequestBody Licencia licencia) {
+        return adminservice.revocarLicencia(licencia);
+    }
+
+    @PutMapping("/reservarLicencia")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<RespuestaDTO> reservarLic(@RequestBody Licencia licencia) {
+        return adminservice.reservarLicencia(licencia);
+    }
+
 
 }

@@ -13,14 +13,14 @@ import javax.validation.Valid;
 public interface UsuarioService {
 
     //Actualiza los datos de un usuario ya creado
-    public ResponseEntity<RespuestaDTO> updateDatos (Usuario usuario);
+    ResponseEntity<RespuestaDTO> updateDatos (Usuario usuario);
 
     //Crea un UsuarioDTO a partir de un Usuario
-    public UsuarioDTO crearUsuarioDTO(Usuario usuario);
+    UsuarioDTO crearUsuarioDTO(Usuario usuario);
 
-    public UserDetailsImpl obtenerUsuario();
+    UserDetailsImpl obtenerUsuario();
 
-    public ResponseEntity<RespuestaDTO> login(@Valid @RequestBody LoginRequest loginRequest);
+    ResponseEntity<RespuestaDTO> login(@Valid @RequestBody LoginRequest loginRequest);
 
 
 

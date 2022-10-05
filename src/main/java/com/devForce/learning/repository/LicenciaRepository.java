@@ -9,4 +9,6 @@ public interface LicenciaRepository extends JpaRepository <Licencia, Long> {
 
     Licencia findFirstByEstadoOrderById(String estado);
 
+    Licencia findBySerie(String serie);
+
 }

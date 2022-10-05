@@ -210,6 +210,9 @@ public class UserInitializer implements CommandLineRunner {
 
             Licencia licenciaPrueba= licenciaRepository.findById(1L);
             System.out.println("licenciaPrueba = " + licenciaPrueba);
+            
+            Licencia licenciaPrueba2= licenciaRepository.findBySerie(licenciaPrueba.getSerie());
+            System.out.println("licenciaPrueba2 = " + licenciaPrueba2);
 
             log.info("Finished with data initialization");
 

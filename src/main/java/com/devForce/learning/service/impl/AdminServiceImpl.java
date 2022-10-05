@@ -150,8 +150,10 @@ public class AdminServiceImpl implements AdminService {
         // verificar que la licencia no esté vencida. Si ya tiene una licencia activa, se extiende el tiempo de la misma
         List<Solicitud> solicitudesAceptadas = solicitudRepository.findByUsuarioAndTipoAndEstado(solicitud.getUsuario(), solicitud.getTipo(), "ACEPTADA");
             for (Solicitud solicitudAux : solicitudesAceptadas){
-                if (!solicitudAux.getLicencia().getVencimiento().isBefore(LocalDate.now())) {
-                    return darLicencia(solicitud,solicitudAux);
+                if(solicitudAux.getLicencia().getEstado()!="DISPONIBLE"){
+                    if (!solicitudAux.getLicencia().getVencimiento().isBefore(LocalDate.now())) {
+                        return darLicencia(solicitud,solicitudAux);
+                    }
                 }
             }
         return darLicencia(solicitud,null);
@@ -231,5 +233,39 @@ public class AdminServiceImpl implements AdminService {
 
     }
 
+    @Override
+    public ResponseEntity<RespuestaDTO> revocarLicencia(Licencia licencia) {
+        Licencia licenciaEnBase = licenciaRepository.findBySerie(licencia.getSerie());
+
+        if(licenciaEnBase.getEstado()=="DISPONIBLE"){
+            return new ResponseEntity<RespuestaDTO>(new RespuestaDTO(
+                    false,
+                    "La licencia '" + licenciaEnBase.getSerie() + "' ya se encuentra disponible",
+                    null), HttpStatus.BAD_REQUEST);
+        }
+        licenciaEnBase.setEstado("DISPONIBLE");
+        licenciaEnBase.setVencimiento(null);
+        licenciaRepository.save(licenciaEnBase);
+
+        return new ResponseEntity<RespuestaDTO>(new RespuestaDTO(true, "Licencia revocada", null), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<RespuestaDTO> reservarLicencia(Licencia licencia) {
+        Licencia licenciaEnBase = licenciaRepository.findBySerie(licencia.getSerie());
+
+        if(licenciaEnBase.getEstado()!="DISPONIBLE"){
+            return new ResponseEntity<RespuestaDTO>(new RespuestaDTO(
+                    false,
+                    "La licencia '" + licenciaEnBase.getSerie() + "' no se encuentra disponible para reservar",
+                    null), HttpStatus.BAD_REQUEST);
+        }
+
+        licenciaEnBase.setEstado("RESERVADA");
+        licenciaRepository.save(licenciaEnBase);
+
+        return new ResponseEntity<RespuestaDTO>(new RespuestaDTO(true, "Licencia reservada", null), HttpStatus.OK);
+
+    }
 
 }

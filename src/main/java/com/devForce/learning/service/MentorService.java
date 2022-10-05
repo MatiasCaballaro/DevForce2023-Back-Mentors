@@ -6,15 +6,15 @@ import org.springframework.http.ResponseEntity;
 
 public interface MentorService {
 
-    public ResponseEntity<RespuestaDTO> aceptarSolicitudPlataforma (Solicitud solicitud, int dias);
+    ResponseEntity<RespuestaDTO> aceptarSolicitudPlataforma (Solicitud solicitud, int dias);
 
-    public ResponseEntity<RespuestaDTO> rechazarSolicitud (Solicitud solicitud);
+    ResponseEntity<RespuestaDTO> rechazarSolicitud (Solicitud solicitud);
 
-    public ResponseEntity<RespuestaDTO> devolverSolicitud (Solicitud solicitud);
+    ResponseEntity<RespuestaDTO> devolverSolicitud (Solicitud solicitud);
 
-    public ResponseEntity<RespuestaDTO> aceptarSolicitudSimple (Solicitud solicitud);
+    ResponseEntity<RespuestaDTO> aceptarSolicitudSimple (Solicitud solicitud);
 
-    public ResponseEntity<RespuestaDTO> aceptarSolicitud (Solicitud solicitud, Integer dias);
+    ResponseEntity<RespuestaDTO> aceptarSolicitud (Solicitud solicitud, Integer dias);
 
 
 
