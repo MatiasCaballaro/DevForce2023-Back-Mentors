@@ -23,4 +23,6 @@ public interface AdminService {
 
     ResponseEntity<RespuestaDTO> reservarLicencia(Licencia licencia);
 
+    ResponseEntity<RespuestaDTO> rechazarSolicitudAdmin(Solicitud solicitud);
+
 }

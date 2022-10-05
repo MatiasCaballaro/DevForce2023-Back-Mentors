@@ -268,4 +268,18 @@ public class AdminServiceImpl implements AdminService {
 
     }
 
+    @Override
+    public ResponseEntity<RespuestaDTO> rechazarSolicitudAdmin(Solicitud solicitud) {
+        UserDetailsImpl admin = usuarioService.obtenerUsuario();
+        Usuario adminUser = usuarioRepository.findById(admin.getId()).orElse(null);
+        if(!solicitud.getEstado().equalsIgnoreCase("PENDIENTE-ADMIN")||(solicitud.getApruebaMentorID()==0)){
+            return new ResponseEntity<>(new RespuestaDTO(false,"Estado de solicitud incorrecto", null), HttpStatus.FORBIDDEN);
+        }
+        solicitud.setApruebaAdminID(admin.getId().intValue());
+        solicitud.setEstado("DENEGADA");
+        solicitudRepository.save(solicitud);
+        return new ResponseEntity<>(new RespuestaDTO(true,"Solicitud Rechazada por Admin", null), HttpStatus.OK);
+    }
+
+
 }
