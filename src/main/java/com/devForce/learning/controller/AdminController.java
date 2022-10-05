@@ -53,7 +53,7 @@ public class AdminController {
         return adminservice.reservarLicencia(licencia);
     }
 
-    @PutMapping("/rechazarSolicitudAdmin")
+    @PostMapping("/rechazarSolicitudAdmin")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RespuestaDTO> rechaSoliAdmin(@RequestBody Solicitud solicitud) {
         return adminservice.rechazarSolicitudAdmin(solicitud);
